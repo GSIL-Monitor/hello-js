@@ -56,3 +56,7 @@ var mult = (function() {
     };
 })();
 console.log(mult(1,2,3,4));
+
+console.log(
+    Object.prototype.toString.call([1,2,3])
+);
