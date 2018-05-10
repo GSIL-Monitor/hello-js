@@ -67,4 +67,7 @@ console.log(reg4.exec('www.wtl.cn/personal/sss?a=6'));
 var reg5 = /(\w+)\s+\1/g;
 console.log(reg5.exec('hello hello'));
 
+var reg6 = /\w、/;
+console.log(reg6.exec('asf可是、hi、'));
+
 

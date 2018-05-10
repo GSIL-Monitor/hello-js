@@ -75,6 +75,7 @@ $(function () {
     $("#switcher h3").click(function () { 
         // 对类的有无进行切换
         $("#switcher button").toggleClass("hidden");
+        $("#somewords").slideToggle('slow');
     });
 });
 
@@ -129,7 +130,7 @@ $(document).ready(function () {
         $("#myspan").load("http://localhost/test.php", {key: txt}, function (response, status, request) {
             this; // dom element
             if(status == "success"){
-                
+
             }
         });
     });

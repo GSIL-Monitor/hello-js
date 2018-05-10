@@ -35,19 +35,19 @@ add1();
 // 例如有一个变量cache，只有在一个特定函数内部访问，那就可以利用闭包将其作用域限制在函数内
 // 匿名自调用函数，里面定义需要封装的变量，然后返回函数的主体
 // 下面这个函数返回连乘结果
-var mult = (function() {
+var mult = (function () {
     // cache为函数内部变量，用作缓存
     // 键为数字拼成的字符串，值为结果
     var cache = {};
     // 返回函数主体
-    return function() {
+    return function () {
         var key = [].join.call(arguments, ',');
-        if (cache[key]){
+        if (cache[key]) {
             return cache[key];
         }
-        else{
+        else {
             var res = 1;
-            for(var i = 0, len = arguments.length; i < len; i++){
+            for (var i = 0, len = arguments.length; i < len; i++) {
                 res = res * arguments[i];
             }
             cache[key] = res;
@@ -55,8 +55,8 @@ var mult = (function() {
         }
     };
 })();
-console.log(mult(1,2,3,4));
+console.log(mult(1, 2, 3, 4));
 
 console.log(
-    Object.prototype.toString.call([1,2,3])
+    Object.prototype.toString.call([1, 2, 3])
 );
