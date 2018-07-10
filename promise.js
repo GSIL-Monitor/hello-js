@@ -21,7 +21,7 @@ promist.then(function(value){
     "suucess";
 }, function(error){
     "error"
-})
+});
 // 或者通过then、catch分别制定resolved和rejected
 promist.then(function (value){
     "success";
@@ -68,7 +68,7 @@ Promise.all([p1,p2]).then(function(result){
 
 
 // 有时候多个异步任务为了容错，第一个执行完就不需要执行后面的
-// 例如从两个url获取相同的信息，只要活得先返回的结果就可以
+// 例如从两个url获取相同的信息，只要获得先返回的结果就可以
 // Promise.race实现
 Promise.race([p1, p2]).then(function(result){
     console.log("race: ");

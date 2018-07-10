@@ -2,7 +2,7 @@
 // 1.方法调用模式：obj.function调用
 // 2.函数调用模式：不是对象的方法，而直接调用
 // 3.构造器调用模式：
-// 4.apply调用模式：
+// 4.apply/call调用模式：
 
 
 // 1.方法调用模式，通过object.function()调用，this绑定到当前对象
@@ -32,7 +32,7 @@ obj.print2 = function () {
     // 函数调用模式
     foo();
 };
-// 浏览器中这里输出应该是10，在vscode中执行的话因为没有window，所以输出undefined
+// 浏览器中这里输出应该是10，node执行的话因为没有window，所以输出undefined
 obj.print2();
 
 
@@ -180,4 +180,3 @@ calc(1);
 calc(2,3);
 
 console.log(calc());
-

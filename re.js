@@ -1,10 +1,16 @@
 // 静态创建 /re/;
-// 动态创建 new RegExp("re");
+// 动态创建 new RegExp("re", "gimu");
 
 // 修饰符
 // g global，全局匹配多次
 // i ignoreCase，忽略大小写
 // m multiline，匹配多行
+// u ES6 . \S可以匹配4字节unicode
+// y ES6 粘连匹配，与g类似，都是从lastIndex往后匹配
+// 但是g只要后面存在即可匹配，y确保匹配必须从剩余的第一个位置开始
+// 实际上y就是加了头部匹配标志^的g
+// s ES6 使.可以匹配任何字符，包括换行\n、回车\r
+
 var reg = /a/gim;
 // re对象具有属性
 console.log("global:"+reg.global);
@@ -61,7 +67,7 @@ console.log(reg4.exec('www.wtl.cn/personal/sss?a=6'));
    \s  等同于[\f\n\r\t\u000B\u0020\u00A0\u2028\u2029] 这是Unicode空白符的一个不完全子集。\S 则表示与其相反：[^\f\n\r\t\u000B\u0020\u00A0\u2028\u2029]
    \w [0-9A-Z_a-z]  \W相反 [^0-9A-Z_a-z]
     [A-Za-z\u00C0-\u1FFF\u2800-\uFFFD],包括了所有的Unicode字母，但也包括成千上万非字母的字符
-  
+
    \1 是指向分组1所捕获到的文本的一个引用，所以能再次被匹配，\2指向分组2的引用，\3以此类推
 */
 var reg5 = /(\w+)\s+\1/g;
@@ -69,5 +75,3 @@ console.log(reg5.exec('hello hello'));
 
 var reg6 = /\w、/;
 console.log(reg6.exec('asf可是、hi、'));
-
-
