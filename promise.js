@@ -33,7 +33,6 @@ promist.catch(function (error){
 
 // 最简单的例子
 var p = new Promise(function (resolve, reject) {
-    console.log("Promise");
     var timeout = Math.random() * 2;
     if(timeout < 1){
         resolve(timeout);
@@ -47,7 +46,6 @@ p.then(function (value) {
 }, function(value){
     console.log("rejected timeout: " + value);
 });
-console.log('Hi!');
 
 
 // 利用Promise执行并行任务
@@ -61,7 +59,6 @@ var p2 = new Promise(function(resolve, reject){
 });
 // 为两个promise指定resolve
 Promise.all([p1,p2]).then(function(result){
-    console.log("all: ");
     console.log(result);
     // 获得一个Array: ['p1 result', 'p2 result']
 });
@@ -73,4 +70,62 @@ Promise.all([p1,p2]).then(function(result){
 Promise.race([p1, p2]).then(function(result){
     console.log("race: ");
     console.log(result);
+    // race:
+    // p2 result
 });
+
+
+// 实现同步机制的例子
+// p4一秒后变为resoved状态，但是resove传入参数为另一个Promise
+// 这时其状态就不由p4决定了，又过了两秒p3变为rejected
+// 这样触发的是p4的catch而不是then
+const p3 = new Promise(function (resolve, reject) {
+    setTimeout(() => reject(new Error('fail')), 3000)
+})
+
+const p4 = new Promise(function (resolve, reject) {
+    setTimeout(() => resolve(p3), 1000)
+})
+p4.then(result => console.log(`then : ${result}`))
+.catch(error => console.log(`catch : ${error}`));
+// catch : Error: fail
+
+// 对Ajax的封装
+const getJSON = function(url) {
+    const promise = new Promise(function(resolve, reject) {
+        const handler = function() {
+            if (this.readyState !== 4) {
+                return;
+            }
+            if (this.status === 200) {
+                resolve(this.response);
+            } else {
+                reject(new Error(this.statusText));
+            }
+        };
+        const client = new XMLHttpRequest();
+        client.open("GET", url);
+        client.onreadystatechange = handler;
+        client.responseType = "json";
+        client.setRequestHeader("Accept", "application/json");
+        client.send();
+
+    });
+    return promise;
+};
+// 第一个回调函数完成以后，会将返回结果作为参数，传入第二个回调函数。
+getJSON("/posts.json").then(function(json) {
+    return json.post;
+}).then(
+    post => {}
+);
+// 前一个回调函数，有可能返回的还是一个Promise对象（即有异步操作），
+// 这时后一个回调函数，就会等待该Promise对象的状态发生变化，才会被调用。
+getJSON("/post/1.json").then(
+    // 返回一个promise，后面的then会根据此promise的状态进行调用
+    post => getJSON(post.commentURL)
+).then(
+    comments => console.log("resolved: ", comments),
+).catch(
+    err => console.log("rejected: ", err)
+);

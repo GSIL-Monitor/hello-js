@@ -84,7 +84,7 @@ app.controller("serviceCtrl", function($scope, $location, $http, $timeout, $inte
     //     url:string,
     //     params:object,
     //     data:string or object,
-    //     headers: object
+    //     headers: object,
     //     transformRequest:function transform(data,headersGetter) or an arra of functions,
     //     transformResponse:function transform(data,headersGetter) or an arra of functions,
     //     cache:boolean or Cache object,

@@ -6,9 +6,12 @@
 $(document).ready(function () {
     $("#tab").addClass("tabborder");
     $("#sub_button").click(function(){
-        $("#tab").removeClass("tabborder");
+        // $("#tab").removeClass("tabborder");
+        $('#tab').toggleClass('tabborder');
     });
+
 });
+
 
 // $()接受选择器作为参数，基本有标签名、id、类，可以组合使用
 // $("p");
@@ -48,18 +51,19 @@ $(document).ready(function () {
     // filter()方法，传入selector或function
     $("p").filter(":even").addClass("className");
     // DOM遍历
-    // .next()      //筛选下一个最接近的同辈元素
-    // .nextAll()   //筛选该元素后面所有的同辈元素
+    // .next()      // 筛选下一个最接近的同辈元素
+    // .nextAll()   // 筛选该元素后面所有的同辈元素
     // .prev()      // 与next()相反
-    // .prevAll()   //与nextAll()相反
-    // .addBack()   //筛选后又包含本身的元素
-    // .parent()    //获取父类元素
-    // .children()  //获取子类元素
+    // .prevAll()   // 与nextAll()相反
+    // .addBack()   // 筛选后又包含本身的元素
+    // .parent()    // 获取父类元素
+    // .children()  // 获取子类元素
 });
 
 
 // $("document").ready()可以简写为
 $(function () {
+    $('#switcher-default').addClass('selected');
     // 监听事件on("event",function)，删除监听off("event")
     // 例如监听点击事件click
     $("#switcher button").on("click", function () {
@@ -72,7 +76,7 @@ $(function () {
         // 移除所有class，添加相应class
         $("body").removeClass().addClass(bodyClass);
     });
-    $("#switcher h3").click(function () { 
+    $("#switcher h3").click(function () {
         // 对类的有无进行切换
         $("#switcher button").toggleClass("hidden");
         $("#somewords").slideToggle('slow');
@@ -82,7 +86,7 @@ $(function () {
 
 // 事件的传播，默认是冒泡策略，从最具体的元素层层往上传播
 $(document).ready(function () {
-    $("#test_sj").click(function (e) { 
+    $("#test_sj").click(function (e) {
         e.preventDefault();
         // 事件往上传播会造成一些想不到的错误，可以通过一些手段避免
         // 1.通过事件对象的target == this判断是不是自身引发的事件
@@ -91,12 +95,12 @@ $(document).ready(function () {
         }
     });
 
-    $("#test_sj span").click(function (e) { 
+    $("#test_sj span").click(function (e) {
         e.preventDefault();
         alert("span");
     });
 
-    $("#test_sj a").click(function (e) { 
+    $("#test_sj a").click(function (e) {
         e.preventDefault();
         alert("a");
         console.log($(this));
@@ -106,7 +110,8 @@ $(document).ready(function () {
 });
 // 利用冒泡的特性，可以实现事件的委托，委托上层父元素来处理事件
 $(document).ready(function () {
-    $("#test_sj").click(function (e) { 
+    $("#test_sj").click(function (e) {
+        console.log(e);
         e.preventDefault();
         // is(selector)
         if($(e.target).is("#test_sj a")){
@@ -125,7 +130,7 @@ $(document).ready(function () {
 
 // 最简单的应用是使用load()函数改变元素内容
 $(document).ready(function () {
-    $("#myinput").keyup(function (e) { 
+    $("#myinput").keyup(function (e) {
         var txt = $(this).val();
         $("#myspan").load("http://localhost/test.php", {key: txt}, function (response, status, request) {
             this; // dom element
@@ -148,7 +153,7 @@ $.getJSON("url", data,
 /*
 $.post("url", data,
     function (data, textStatus, jqXHR) {
-        
+
     },
     "dataType"
 );
@@ -158,7 +163,7 @@ $.post("url", data,
 /*
 $.get("url", data,
     function (data, textStatus, jqXHR) {
-        
+
     },
     "dataType"
 );
@@ -172,7 +177,7 @@ $.ajax({
     data: "data",
     dataType: "dataType",
     success: function (response) {
-        
+
     }
 });
 */

@@ -96,26 +96,26 @@ var salesOffices = {
         this.clientList[key].push(fn);
     },
     // 触发器，触发某个事件时调用
-    trigger: function(){
+    trigger: function(k, ...args){
         // arguments第一个参数为key，后面的为处理函数接受的参数
         // 提取key
-        var key = Array.prototype.shift.call(arguments);
+        var key = k;
         // 处理函数
         var fns = this.clientList[key];
         // 没有处理函数
-        if(!fns || fns.length == 0){
+        if(!fns || fns.length === 0){
             return false;
         }
         // 调用处理函数
-        for(var i = 0, fn; i < fns.length; fn = fns[i++]){
-            fn.apply(this, arguments);
+        for(let i = 0, fn; i < fns.length; fn = fns[i++]){
+            fn.apply(this, args);
         }
     },
     // 移除一个监听事件
     remove: function(key, fn){
         var fns = this.clientList[key];
         // 没有注册的监听事件直接返回
-        if(!fns || fns.length == 0){
+        if(!fns || fns.length === 0){
             return false;
         }
         // fn参数为空，删除整个key对应的监听事件
@@ -124,7 +124,7 @@ var salesOffices = {
         }
         // 否则只删除对应的处理函数fn
         else{
-            for(var i = 0, l = fns.length; i < l; i++){
+            for(let i = 0, l = fns.length; i < l; i++){
                 var _fn = fns[i];
                 if(_fn === fn){
                     fns.splice(i, 1);

@@ -135,8 +135,8 @@ Function.prototype.after = function(afterfn){
     };
 };
 // 创建主函数
-var func = function(){
-    console.log('log something...');
+var func = function(str){
+    console.log('log something... ' + str);
 };
 // 对func进行包装
 func = func.before(function(){
@@ -145,22 +145,22 @@ func = func.before(function(){
     console.log('[/LOG]');
 });
 // 测试
-func();
+func('hello');
 
 
 // 再举一个例子，例如我们需要一个函数，传入参数的时候只是保存参数值，不传入参数的时候才进行运算输出结果
 var curry = function(fn){
     // 保存参数
-    var args = [];
-    return function(){
-        if(arguments.length == 0){
+    var myArgs = [];
+    return function(...args){
+        if(args.length == 0){
             // 计算
-            return fn.apply(this, args);
+            return fn.apply(this, myArgs);
         }
         else{
-            // 保存参数，注释掉的方法有缺陷，只能添加一个参数
-            // args.push(arguments[0]);
-            Array.prototype.push.apply(args, arguments);
+            // 保存参数，可能不止一个
+            myArgs.push(...args);
+            // Array.prototype.push.apply(myArgs, args);
         }
     };
 };
