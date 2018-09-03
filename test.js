@@ -1,53 +1,42 @@
+setImmediate(() => {
+    console.log('immediate');
+    setImmediate(() => {
+        console.log('immediate2');
+    });
+    setTimeout(() => {
+        console.log('TIMEOUT in immediate');
+    })
+});
 
-let arr = [1,4,7];
-arr.splice(1,1);
-console.log(arr);
-let x = 5;
-console.log(arr.indexOf(x));
-let m = new Map();
-m.set("str", []);
-console.log(m.get("str").push("eat"));
-for([k,v] of m){
-	console.log(v);
-}
+setTimeout(() => {
+    console.log('TIMEOUT');
+    setImmediate(() => {
+        console.log('immediate in TIMEOUT');
+    })
+    setTimeout(() => {
+        console.log('TIMEOUT2');
+    })
+});
 
-let s = new Set();
-s.add("aaa");
-s.add("aaa");
-console.log(Array.from(s));
+new Promise((resolve, reject) => {
+    resolve();
+}).then((arg) => {
+    console.log('then1');
+});
 
-let str = "hello";
-console.log(str[1]);
-for(v of str){
-	console.log(v);
-}
-const obj = {
-	"a":123,
-	"v":444,
-	"b":346,
-}
-Object.keys(obj).forEach((k,v) => {
-	console.log(`${k} ${v}`);
-})
+process.nextTick(function A() {
+    console.log(1);
+    process.nextTick(function B() {
+        console.log(2);
+    });
+});
+setImmediate(function (){
+  setImmediate(function A() {
+    console.log(1);
+    setImmediate(function B(){console.log(2);});
+  });
 
-let i = -91283472332+0;
-console.log(i-0);
-
-var fn = function(...arg) {
-	console.log(arg);
-};
-
-fn("a");
-
-// console.log(lll);
-for(let lll = 0; lll<2; lll++){
-
-}
-console.log(lll);
-function foobaaa() {
-	var aaa = 1;
-}
-console.log(lll);
-// console.log(aaa);
-console.log(bbb);
-var bbb = 9;
+  setTimeout(function timeout() {
+    console.log('TIMEOUT FIRED');
+  }, 0);
+});

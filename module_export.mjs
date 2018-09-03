@@ -1,3 +1,4 @@
+// jshint esversion:6
 // ES6模块设计尽量静态化，在编译阶段执行
 // 模块中顶层this为undefined，无意义
 

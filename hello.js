@@ -1,14 +1,44 @@
+// jshint esversion:6
 {
     let x = 1;
     let y = 1.0;
     x === y; // true
-    typeof x == typeof y; // true
+    typeof x === typeof y; // true
     typeof NaN; // number
     NaN === NaN; // false
     isNaN(NaN); // true
+    setImmediate(function A() {
+        console.log(1);
+        setImmediate(function B() {
+            console.log(2);
+        });
+    });
+    setTimeout(function timeout() {
+        console.log('TIMEOUT FIRED');
+    }, 1000);
+    setTimeout(function timeout() {
+        console.log('TIMEOUT2');
+    }, 1000);
 }
 
+{
+    // Js事件循环
 
+    // Js是单线程的(多线程会造成同步互斥问题)
+    // Js是通过事件循环(event loop)机制实现异步的
+
+    // 首先判断代码段是同步还是异步，同步就进入主线程执行，异步就进入event table
+    // 异步任务在event table中注册函数，当满足触发条件后，推入event queue
+    // 同步任务进入主线程后一直执行，直到主线程空闲后才会去执行event queue的异步任务
+
+    // 异步任务内部也有顺序
+    // 1.process.nextTick(fn)是在当前执行栈尾部、异步任务之前添加回调，也就是说fn执行在所有异步任务之前
+    // nextTick嵌套nextTick仍然是在当前事件循环中执行，不会推迟到下一个loop
+    // 2.Promise.then()，如果嵌套立即resolve的promise，仍然在当前loop中执行
+    // 3.setTimeout()和setInterval()，定时结束后尽量早的执行，可能在当前时间loop也可能在后面
+    // 4.setImmediate()，如果里面有异步，则在下个loop执行
+
+}
 
 
 
