@@ -2,15 +2,15 @@
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 
 
 module.exports = {
     entry: __dirname + '/app/main.js', // 唯一的入口文件
-    output: {
-        filename: '[name].[chunkhash].js',  // 打包后输出文件的文件名
-        path: path.resolve(__dirname, 'build'), // 打包后的文件存放地方
-    },
+    // output: {
+    //     filename: '[name].[hash].js',  // 打包后输出文件的文件名
+    //     path: path.resolve(__dirname, 'build'), // 打包后的文件存放地方
+    // },
     module: {
         rules: [
             {
@@ -27,7 +27,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: __dirname + "/app/index.tmpl.html"
         }),
-        new CleanWebpackPlugin(['build']),
 
     ],
 };

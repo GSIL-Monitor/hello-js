@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>Vue</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+</head>
+
+<body>
+    <!-- v-bind -->
+    <!-- v-bind缩写 :title="mytitle" 绑定class时还可以传入对象或数组 -->
+    <!-- isActive为true时，div有active类 -->
+    <div id="app" v-bind:title="mytitle" :class="{ active: isActive }">
+        {{ message }}
+    </div>
+    <!-- v-if v-else v-else-if -->
+    <div id="app-2">
+        <p v-if="seen">能看到</p>
+        <p v-else>看不到</p>
+    </div>
+    <!-- v-for="(item, index) in array" 或者用 of 代替 in -->
+    <!-- v-for="(value, key, index) in object" -->
+    <!-- 遍历是按照Object.keys()的结果进行的 -->
+    <!-- 用 v-bind:key="item.id" 来让Vue跟踪每个节点的身份 -->
+    <!-- v-for:"n in 10"  1~10 -->
+    <!-- v-for 和 v-if 在同级时，for 优先级高，if会在每个for中执行 -->
+    <div id="app-3">
+        <ol>
+            <li v-for="todo in todos">
+                {{ todo.text }}
+            </li>
+        </ol>
+    </div>
+    <!-- v-on 监听事件 -->
+    <!-- v-on缩写 @click="reverse" -->
+    <div id="app-4">
+        <p> {{ message }} </p>
+        <button type="button" name="button" v-on:click="reverse" v-bind:disabled="isDisabled">倒置</button>
+    </div>
+    <!-- v-model watch侦听属性-->
+    <div id="app-5">
+        <p>total: {{ total }} </p>
+        num: <input type="number" v-model="num" value="">
+    </div>
+
+        <!-- computed 计算属性-->
+        <div id="app-7">
+            <p>message: {{message}}</p>
+            <p>reverseMessage: {{reverseMessage}}</p>
+        </div>
+        <!-- 组件的 v-for ，不能将item自动注入组件，需要使用props -->
+        <div id="todo-list">
+            <form @submit.prevent="addNewTodo">
+                <label for="new-todo">Add a todo</label>
+                <input v-model="newTodoText" type="text" id="new-todo" placeholder="E.g. Feed the cat">
+                <button>Add</button>
+            </form>
+            <ul>
+                <!-- 因为只有li才能直接出现在ul内部，如果直接使用todo-item标签会解析出错，因此用is指定模板 -->
+                <li is="todo-item" v-for="(todo, index) in todos" :key="todo.id" :title="todo.title" @remove="todos.splice(index,1)"></li>
+            </ul>
+        </div>
+
+
+
+
+        <script>
+            // 启用chrome vue devtools
+            Vue.config.devtools = true;
+            // v-bind
+            let app = new Vue({
+                el: '#app',
+                data: {
+                    message: 'hello vue!',
+                    mytitle: '页面加载于 ' + new Date().toLocaleString(),
+                    isActive: true,
+                }
+            });
+            // v-if
+            let app2 = new Vue({
+                el: '#app-2',
+                data: {
+                    seen: false,
+                }
+            });
+            // v-for
+            let app3 = new Vue({
+                el: '#app-3',
+                data: {
+                    todos: [{
+                            text: '学习 JavaScript'
+                        },
+                        {
+                            text: '学习 Vue'
+                        },
+                        {
+                            text: '学习 aaa'
+                        },
+                    ]
+                }
+            });
+            // v-on
+            let app4 = new Vue({
+                el: '#app-4',
+                data: {
+                    message: 'Hello Vue.',
+                    isDisabled: false,
+                },
+                methods: {
+                    reverse: function() {
+                        this.message = this.message.split('').reverse().join('');
+                    },
+                },
+            });
+            // v-model watch侦听属性，需要在数据变化时执行异步操作或开销较大的操作时，使用watch
+            let app5 = new Vue({
+                el: '#app-5',
+                data: {
+                    num: 5,
+                    total: 50
+                },
+                watch: {
+                    num: function(newVal, oldVal) {
+                        this.total = newVal * 10;
+                    }
+                }
+            });
+
+            // computed
+            // 计算属性基于他们的依赖进行结果的缓存，只要依赖不改变，多次访问就会直接返回结果
+            // 而如果用methods，则需要每次都执行方法返回结果
+            // 上面的watch例子用computed改写更好
+            let app7 = new Vue({
+                el: '#app-7',
+                data: {
+                    message: 'hello',
+                },
+                computed: {
+                    reverseMessage: function() {
+                        return this.message.split('').reverse().join('');
+                    }
+                }
+            });
+            Vue.component('todo-item', {
+                template: `<li>{{title}} <button @click="$emit('remove')">Remove</button> </li>`,
+                props: ['title'],
+            });
+
+            let todoList = new Vue({
+                el: '#todo-list',
+                data: {
+                    newTodoText: '',
+                    todos: [
+                        {
+                            id: 1,
+                            title: 'Do the dishes'
+                        },
+                        {
+                            id: 2,
+                            title: 'Take out the trash'
+                        },
+                        {
+                            id: 3,
+                            title: 'Mow the lawn'
+                        },
+                    ],
+                    nextTodoId: 4,
+                },
+                methods: {
+                    addNewTodo: function() {
+                        this.todos.push({
+                            id: this.nextTodoId++,
+                            title: this.newTodoText,
+                        });
+                        this.newTodoText = ''
+                    },
+                },
+            });
+
+            // 由于 JavaScript 的限制，Vue 不能检测以下变动的数组：
+            // 1.当你利用索引直接设置一个项时，例如：vm.items[indexOfItem] = newValue
+            // 2.当你修改数组的长度时，例如：vm.items.length = newLength
+            // 解决：
+            // 1.Vue.set() vm.$set(vm.array, indexOfItem, newValue) 或用 splice
+            // 2.vm.items.splice(newLength)
+
+            // 还是由于 JavaScript 的限制，Vue 不能检测对象属性的添加或删除：
+            // 对于已经创建的实例，Vue 不能动态添加根级别的响应式属性，即data里面直接定义的属性
+            // 可以使用 Vue.set(object, key, value) 方法向嵌套对象添加响应式属性 Vue.set(vm.obj, key, value)
+            // 使用Object.assign()添加多个属性时，应该新建对象赋值给原对象，如下
+            // vm.obj = Object.assign({}, vm.obj, {newkey1:newvalue1, newkey2:newvalue2})
+        </script>
+</body>
+
+</html>

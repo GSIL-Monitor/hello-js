@@ -5,6 +5,7 @@ const common = require('./webpack.common.js');
 const webpack = require('webpack');
 
 
+
 module.exports = merge(common, {
     devtool: 'eval-source-map',
     devServer: {
@@ -39,7 +40,7 @@ module.exports = merge(common, {
     },
     plugins: [
         new webpack.NamedModulesPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
     ],
     mode: "development",
 

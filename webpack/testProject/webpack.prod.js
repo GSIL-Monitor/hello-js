@@ -1,13 +1,19 @@
 // webpack 生产环境配置文件
 
+const path = require('path');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = merge(common, {
     devtool: 'source-map',
+    output: {
+        filename: '[name].[chunkhash].js',  // 打包后输出文件的文件名
+        path: path.resolve(__dirname, 'build'), // 打包后的文件存放地方
+    },
     module: {
         rules: [
             {
@@ -31,9 +37,11 @@ module.exports = merge(common, {
     },
     plugins: [
         new webpack.BannerPlugin('版权所有，翻版必究'),
+        new CleanWebpackPlugin(['build']),
         new UglifyJSPlugin({
             sourceMap: true
         }),
+        new webpack.HashedModuleIdsPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
         }),

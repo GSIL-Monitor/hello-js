@@ -1,4 +1,4 @@
-
+// jshint esversion:6
 let person = {
     'name':'nn',
     'age':18,
