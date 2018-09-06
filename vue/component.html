@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Component</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <style>
+        .demo-alert-box {
+            padding: 10px 20px;
+            background: #f3beb8;
+            border: 1px solid #f09898;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="button-counter-demo">
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+        <button-counter></button-counter>
+    </div>
+    <!-- 通过props向子组件传递数据 v-bind -->
+    <!-- @enlarge-text="onEnlargeText" 监听组件内部触发的事件，可通过$event访问到传递的参数 -->
+    <div id="blog-post-demo">
+        <div :style="{ fontSize: postFontSize+'em'}">
+            <blog-post
+                v-for="post in posts"
+                :key="post.id"
+                :post="post"
+                @enlarge-text="onEnlargeText"
+
+            ></blog-post>
+        </div>
+    </div>
+    <!-- 在组件上使用v-model -->
+    <div id="custom-input-demo">
+        <custom-input v-model="searchText"></custom-input>
+        <p>{{searchText}}</p>
+    </div>
+    <!-- slot插槽分发内容 -->
+    <div id="alert-box-demo">
+        <alert-box>Something bad happened.</alert-box>
+    </div>
+
+
+    <script>
+        Vue.config.devtools = true;
+        // 全局注册组件，一个组件只能有一个根元素，组件名字母全小写且必须包含一个连字符
+        Vue.component('button-counter', {
+            // 组件的data必须是函数，每个组件实例维护一份独立的数据
+            data: function() {
+                return {
+                    count: 0
+                }
+            },
+            template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+        });
+        new Vue({
+            el: '#button-counter-demo'
+        });
+
+        // 通过props向子组件传递数据
+        Vue.component('blog-post', {
+            props: [ 'post' ],
+            // 通过$emit(name, arg)向父级组件发送一个事件
+            template: `
+            <div id="custom-input-demoblog-post">
+                <h3>{{post.title}}</h3>
+                <button @click="$emit('enlarge-text', 0.1)">Enlarge text</button>
+                <div v-html="post.content"></div>
+            </div>`,
+        });
+        new Vue({
+            el: '#blog-post-demo',
+            data: {
+                posts: [{
+                        id: 1,
+                        title: 'My journey with Vue',
+                        content: '...content...'
+                    },
+                    {
+                        id: 2,
+                        title: 'Blogging with Vue',
+                        content: '...content...'
+                    },
+                    {
+                        id: 3,
+                        title: 'Why Vue is so fun',
+                        content: '...content...'
+                    }
+                ],
+                postFontSize: 1,
+            },
+            methods: {
+                onEnlargeText: function (enlargeAmount) {
+                    this.postFontSize += enlargeAmount;
+                }
+            }
+        });
+
+        // 在组件中使用v-model
+        // <input v-model="searchText">
+        // 等价于
+        // <input v-bind:value="searchText" v-on:input="searchText = $event.target.value">
+        // 而用在组件上时， v-model则会这样
+        // <custom-input v-bind:value="searchText" v-on:input="searchText = $event"></custom-input>
+        // 为了让其正常工作，这个组件内的input必须：
+        // 1.将其 value 属性绑定到一个名叫 value 的 prop 上
+        // 2.在其 input 事件被触发时，将新的值通过自定义的 input 事件抛出
+        Vue.component('custom-input', {
+            props: ['value'],
+            template: `<input :value="value" @input="$emit('input', $event.target.value)">`
+        });
+        new Vue({
+            el: '#custom-input-demo',
+            data: {
+                searchText: 'emm...',
+            }
+        })
+
+        // slot插槽分发内容
+        Vue.component('alert-box', {
+            template: `
+            <div class="demo-alert-box">
+                <strong>Error!</strong>
+                <slot></slot>
+            </div>`
+        });
+        new Vue({
+            el: '#alert-box-demo'
+        });
+
+        // 局部注册组件
+        // 如果不再使用某个全局注册的组件，它始终会包含在构建结果中增加js体积
+        // 用对象定义组件
+        // var ComponentA = { /* ... */ }
+        // var ComponentB = { /* ... */ }
+        // var ComponentC = { /* ... */ }
+        // 然后在components选项中定义需要的组件，注意平级组件之间不可相互调用
+        // new Vue({
+        //     el: '#app'
+        //     components: {
+        //         'component-a': ComponentA,
+        //         'component-b': ComponentB
+        //     }
+        // })
+
+        // 如果在ComponentB.js中使用ComponentA和ComponentC
+        // ComponentB.js如下
+        // import ComponentA from './ComponentA'
+        // import ComponentC from './ComponentC'
+        //
+        // export default {
+        //     components: {
+        //         ComponentA,
+        //         ComponentC
+        //     },
+        //     // ...
+        // }
+
+        // 基础组件自动化全局注册https://cn.vuejs.org/v2/guide/components-registration.html#%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E7%9A%84%E8%87%AA%E5%8A%A8%E5%8C%96%E5%85%A8%E5%B1%80%E6%B3%A8%E5%86%8C
+
+
+        // props中的变量名要会出现在html属性中，而属性不区分大小写，所以用kebab-case(短横线分隔)命名
+        // 可以指定变量的类型、验证要求，没有满足要求会在控制台发出警告
+        // props: {
+        //     title: String,
+        //     likes: Number,
+        //     isPublished: Boolean,
+        //     commentIds: Array,
+        //     author: Object
+        // }
+
+        // 不应该在一个子组件内部修改prop的值，最好定义一个本地data属性接受prop传来的初始值，然后改变data中的值
+        // 数组、对象通过引用传入，直接赋值再修改还是会导致父组件内容被修改
+
+    </script>
+
+
+</body>
+
+</html>
