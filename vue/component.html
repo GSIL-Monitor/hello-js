@@ -346,6 +346,17 @@
 
     // 不应该在一个子组件内部修改prop的值，最好定义一个本地data属性接受prop传来的初始值，然后改变data中的值
     // 数组、对象通过引用传入，直接赋值再修改还是会导致父组件内容被修改
+
+
+    // provide和inject实现依赖注入。
+    // provide指定我们想要提供给后代组件的数据/方法
+    // provide: function() {
+    //     return {
+    //         getMap: this.getMap
+    //     }
+    // }
+    // 在后代组件里可以用inject来接收指定的属性
+    // inject: ['getMap']
     </script>
 
 
