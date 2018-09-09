@@ -261,15 +261,6 @@
         <component v-bind:is="currentTabComponent"></component>
     </div>
     <script>
-    Vue.component('tab-home', {
-        template: '<p>Home component</p>'
-    });
-    Vue.component('tab-posts', {
-        template: '<p>Posts component</p>'
-    });
-    Vue.component('tab-archive', {
-        template: '<p>Archive component</p>'
-    });
     let dynamicComponentDemo = new Vue({
         el: '#dynamic-component-demo',
         data: {
@@ -281,6 +272,17 @@
                 return 'tab-' + this.currentTab.toLowerCase();
             }
         },
+        components: {
+            'tab-home':{
+                template: '<p>Home component</p>'
+            },
+            'tab-posts':{
+                template: '<p>Posts component</p>'
+            },
+            'tab-archive':{
+                template: '<p>Archive component</p>'
+            }
+        }
     });
     </script>
 
@@ -380,6 +382,20 @@
     //         picker.destroy()
     //     })
     // }
+
+
+    // 组件可以递归引用，通过实例中的 name 选项，注意设定递归终止条件
+
+    // 组件之间可以循环调用，如果使用全局注册组件，可以自动解除悖论；使用webapck模块导入时，会报错组件未定义
+    // 可以在生命周期钩子beforeCreate去注册子组件来解决
+    // beforeCreate: function() {
+    //     this.$options.components.TreeFolderContents = require('./tree-folder-contents.vue').default;
+    // }
+    // 或者使用webpack异步import
+    // components: {
+    //     TreeFolderContents: () => import('.tree-folder-contents.vue');
+    // }
+
 
 
     </script>

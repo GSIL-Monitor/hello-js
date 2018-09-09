@@ -16,7 +16,7 @@
         <p>mustache语法 : {{ message }}</p>
         <!-- v-html 指令可以将值解释为html代码，注意不要对用户提供的内容进行渲染以导致xss攻击 -->
         <p>v-html指令 : <span v-html="message"></span></p>
-        <!-- v-once指令只会初次渲染，之后改变数据值不会更新 -->
+        <!-- v-once指令只会初次渲染，之后改变数据值不会更新，这会创建低开销的有缓存的静态组件 -->
         <p v-once>这里的值不会随message而改变 : {{message}}</p>
     </div>
     <script>
