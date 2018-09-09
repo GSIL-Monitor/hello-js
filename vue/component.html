@@ -348,6 +348,10 @@
     // 数组、对象通过引用传入，直接赋值再修改还是会导致父组件内容被修改
 
 
+    // 可以通过 ref 特性为子组件赋予一个 ID 引用 <base-input ref="usernameInput"></base-input>
+    // 在父组件中使用 this.$refs.usernameInput 来访问这个子组件
+
+
     // provide和inject实现依赖注入。
     // provide指定我们想要提供给后代组件的数据/方法
     // provide: function() {
@@ -357,6 +361,27 @@
     // }
     // 在后代组件里可以用inject来接收指定的属性
     // inject: ['getMap']
+
+
+    // 在Vue实例中可以手动监听事件
+    // 通过 $on(eventName, eventHandler) 侦听一个事件
+    // 通过 $once(eventName, eventHandler) 一次性侦听一个事件
+    // 通过 $off(eventName, eventHandler) 停止侦听一个事件
+    // 集成一个第三方库，销毁代码可以用$once('hook:beforeDestroy', func)
+    // mounted: function() {
+    //     // Pikaday 是一个第三方日期选择器的库
+    //     var picker = new Pikaday({
+    //         field: this.$refs.input,
+    //         format: 'YYYY-MM-DD'
+    //     })
+    //     // 在组件被销毁之前，
+    //     // 也销毁这个日期选择器。
+    //     this.$once('hook:beforeDestroy', function() {
+    //         picker.destroy()
+    //     })
+    // }
+
+
     </script>
 
 
