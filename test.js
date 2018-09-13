@@ -1,18 +1,12 @@
-// jshint esversion:6
-
-function debounce(fn, wait) {
-    let timer = null;
-    return function(...args) {
-        let that = this;
-        if (timer) {
-
-        }
-    };
+function sometime(n) {
+	return new Promise((resove,reject) => {
+		setTimeout(reject(n+200), n);
+	});
 }
 
-var fn = function() {
-    console.log('fn');
-};
-
-var f = debounce(fn, 500);
-f();
+async function test () {
+	let res = await sometime(200);
+	// console.dir(res);
+	console.log(res);
+}
+test();

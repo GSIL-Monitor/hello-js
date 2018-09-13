@@ -10,19 +10,19 @@
 // 以下例子根据绩效等级计算年终奖金
 // 策略，可配置部分
 var levels = {
-    'A': function(salary) {
-        return salary * 4
-    },
-    'B': function(salary) {
-        return salary * 3
-    },
-    'C': function(salary) {
-        return salary * 2
-    }
-}
+	'A': function(salary) {
+		return salary * 4
+	},
+	'B': function(salary) {
+		return salary * 3
+	},
+	'C': function(salary) {
+		return salary * 2
+	}
+};
 // 环境，使用方式，基本不变
 var calcBonus = function(level, salary) {
-    return levels[level](salary);
+	return levels[level](salary);
 };
 
 
@@ -36,40 +36,40 @@ var calcBonus = function(level, salary) {
 // 小明通过代理B、C送花给A
 var Flower = function() {};
 var xiaoming = {
-    sendFlower: function(target) {
-        var flower = new Flower();
-        target.receiveFlower(flower);
-    }
+	sendFlower: function(target) {
+		var flower = new Flower();
+		target.receiveFlower(flower);
+	}
 };
 // 代理B，当A心情好时才送花，或者送花的人不符合A的要求就不会送花
 // B可以帮助A过滤掉一些请求，称为保护代理
 var B = {
-    receiveFlower: function(flower) {
-        A.listenGoodMood(function(){
-            A.receiveFlower(flower);
-        })
-    }
+	receiveFlower: function(flower) {
+		A.listenGoodMood(function() {
+			A.receiveFlower(flower);
+		})
+	}
 };
 // 代理C，会帮忙买花送给A
 // 如果new Flower()的代价很大，那等到送的时候才new
 // 把一些开销很大的对象，延迟到真正需要它的时候才去创建，称为虚拟代理
 var C = {
-    receiveFlower: function(){
-        A.listenGoodMood(function(){
-            var flower = new Flower();
-            A.receiveFlower(flower);
-        })
-    }
-}
+	receiveFlower: function() {
+		A.listenGoodMood(function() {
+			var flower = new Flower();
+			A.receiveFlower(flower);
+		})
+	}
+};
 // 实际对象A
 var A = {
-    receiveFlower: function(flower) {
-        console.log('收到花' + flower)；
-    },
-    listenGoodMood: function(callback){
-        setTimeout(callback(), 10000);
-    }
-}；
+	receiveFlower: function(flower) {
+		console.log('收到花' + flower)；
+	},
+	listenGoodMood: function(callback) {
+		setTimeout(callback(), 10000);
+	}
+};
 
 
 
@@ -82,54 +82,54 @@ var A = {
 
 // 售楼处
 var salesOffices = {
-    // 监听的事件list
-    clientList: {},
-    // 添加一个监听事件(例如买80平的房子和100平的房子)
-    listen: function(key, fn){
-        // key 监听的对象
-        // fn 事件发生时的处理函数
-        if(!this.clientList[key]){
-            // 处理函数可以有多个，用数组存储
-            this.clientList[key] = [];
-        }
-        // 处理函数推入响应事件的处理函数数组
-        this.clientList[key].push(fn);
-    },
-    // 触发器，触发某个事件时调用
-    trigger: function(k, ...args){
-        // arguments第一个参数为key，后面的为处理函数接受的参数
-        // 提取key
-        var key = k;
-        // 处理函数
-        var fns = this.clientList[key];
-        // 没有处理函数
-        if(!fns || fns.length === 0){
-            return false;
-        }
-        // 调用处理函数
-        for(let i = 0, fn; i < fns.length; fn = fns[i++]){
-            fn.apply(this, args);
-        }
-    },
-    // 移除一个监听事件
-    remove: function(key, fn){
-        var fns = this.clientList[key];
-        // 没有注册的监听事件直接返回
-        if(!fns || fns.length === 0){
-            return false;
-        }
-        // fn参数为空，删除整个key对应的监听事件
-        if(!fn){
-            this.clientList[key] = undefined;
-        }
-        // 否则只删除对应的处理函数fn
-        else{
-            for(let i = 0, l = fns.length; i < l; i++){
-                var _fn = fns[i];
-                if(_fn === fn){
-                    fns.splice(i, 1);
-                }
-            }
-        }
-    }
+	// 监听的事件list
+	clientList: {},
+	// 添加一个监听事件(例如买80平的房子和100平的房子)
+	listen: function(key, fn) {
+		// key 监听的对象
+		// fn 事件发生时的处理函数
+		if (!this.clientList[key]) {
+			// 处理函数可以有多个，用数组存储
+			this.clientList[key] = [];
+		}
+		// 处理函数推入响应事件的处理函数数组
+		this.clientList[key].push(fn);
+	},
+	// 触发器，触发某个事件时调用
+	trigger: function(k, ...args) {
+		// arguments第一个参数为key，后面的为处理函数接受的参数
+		// 提取key
+		var key = k;
+		// 处理函数
+		var fns = this.clientList[key];
+		// 没有处理函数
+		if (!fns || fns.length === 0) {
+			return false;
+		}
+		// 调用处理函数
+		for (let i = 0, fn; i < fns.length; fn = fns[i++]) {
+			fn.apply(this, args);
+		}
+	},
+	// 移除一个监听事件
+	remove: function(key, fn) {
+		var fns = this.clientList[key];
+		// 没有注册的监听事件直接返回
+		if (!fns || fns.length === 0) {
+			return false;
+		}
+		// fn参数为空，删除整个key对应的监听事件
+		if (!fn) {
+			this.clientList[key] = undefined;
+		}
+		// 否则只删除对应的处理函数fn
+		else {
+			for (let i = 0, l = fns.length; i < l; i++) {
+				var _fn = fns[i];
+				if (_fn === fn) {
+					fns.splice(i, 1);
+				}
+			}
+		}
+	}
 };

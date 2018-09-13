@@ -6,15 +6,15 @@ let firstName = "wen";
 let lastName = "dabei";
 
 function sayName() {
-    console.log(`I'm ${firstName} ${lastName}`);
+	console.log(`I'm ${firstName} ${lastName}`);
 }
 
 export {
-    firstName,
-    lastName,
-    sayName,
-    // 可以使用as更换名字
-    // sayName as myName,
+	firstName,
+	lastName,
+	sayName,
+	// 可以使用as更换名字
+	// sayName as myName,
 }
 
 // import时需要知道模块输出的变量名是什么，很不方便
@@ -23,8 +23,8 @@ export {
 // 一个模块只能有一个默认输出，因此export default命令只能使用一次
 // import命令后面不用加大括号，因为只可能唯一对应export default命令
 let obj = {
-    firstName,
-    lastName,
-    sayName,
+	firstName,
+	lastName,
+	sayName,
 };
 export default obj;

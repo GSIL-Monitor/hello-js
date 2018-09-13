@@ -1,7 +1,7 @@
 // jshint esversion:6
 let person = {
-    'name':'nn',
-    'age':18,
+	'name': 'nn',
+	'age': 18,
 };
 
 // 获取对象属性值，使用||来提供默认值，就不会返回undefined了
@@ -19,17 +19,17 @@ x.name; // wtl
 // 通过prototype原型对象进行继承
 // 构造函数 自带一个同名的原型对象Person{} 使用this添加实例属性、实例方法
 function Person(name, age) {
-    // 使用this是定义在实例上的，每个实例拥有自己的
-    this.name = name || "wuming";
-    this.age = 18;
+	// 使用this是定义在实例上的，每个实例拥有自己的
+	this.name = name || "wuming";
+	this.age = 18;
 }
 // 定义在原型对象上的属性，所有实例共享
 Person.prototype.gender = "DK";
 Person.prototype.race = "DK";
 // 定义在原型对象上的方法，所有实例共享
 Person.prototype.sayName = function() {
-    console.log(`I'm ${this.name}`);
-}
+	console.log(`I'm ${this.name}`);
+};
 
 
 // 利用构造函数新建实例对象
@@ -76,7 +76,7 @@ Person.prototype.gender; // DK
 
 
 // 直接输出，不包括原型链中的内容
-console.log(tom);  // Person { name: 'tom', age: 18, gender: '男' }
+console.log(tom); // Person { name: 'tom', age: 18, gender: '男' }
 // typeof可以用来检查属性是否存在
 typeof tom.xxx === "undefined"; // true
 // hasOwnProperty只检查当前对象(通过this定义) 不会检查原型链
@@ -84,18 +84,18 @@ tom.hasOwnProperty("gender"); // true 因为前面通过tom.gender定义了
 tom.hasOwnProperty("race"); // false
 
 // for in 遍历对象，in操作符会查找原型链
-for(k in tom){
-    console.log(`${k}: ${tom[k]}`);
-    /*
-    name: tom
-    age: 18
-    gender: 男
-    race: DK
-    sayName: function() {
-        console.log(`I'm ${this.name}`);
-    }
-    wen: 111
-    */
+for (let k in tom) {
+	console.log(`${k}: ${tom[k]}`);
+	/*
+	name: tom
+	age: 18
+	gender: 男
+	race: DK
+	sayName: function() {
+	    console.log(`I'm ${this.name}`);
+	}
+	wen: 111
+	*/
 }
 
 
@@ -103,15 +103,15 @@ for(k in tom){
 // 实现多态:同一个操作作用于不同对象，得到不同的执行方式和结果
 // 将“做什么” 和 “谁来做、怎么做” 分开
 var shout = function(animal) {
-    animal.shout();
+	animal.shout();
 };
-var Duck = function(){};
-Duck.prototype.shout = function(){
-    console.log('gagaga');
+var Duck = function() {};
+Duck.prototype.shout = function() {
+	console.log('gagaga');
 };
-var Chicken = function(){};
-Chicken.prototype.shout = function(){
-    console.log('jijiji');
+var Chicken = function() {};
+Chicken.prototype.shout = function() {
+	console.log('jijiji');
 };
 
 shout(new Duck()); // gagaga

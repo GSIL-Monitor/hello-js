@@ -13,12 +13,12 @@
 
 var reg = /a/gimy;
 // re对象具有属性
-reg.global;     // true
+reg.global; // true
 reg.ignoreCase; // true
-reg.multiline;  // true
-reg.sticky;     // true
+reg.multiline; // true
+reg.sticky; // true
 // 原正则表达式
-reg.source;  // a
+reg.source; // a
 // 下一次exec开始匹配的索引，初始是0
 reg.lastIndex;
 
@@ -66,7 +66,7 @@ reg3.exec('http:xxx:'); //["http:xxx:", "xxx:"]
 // 下面的re会匹配 以斜杠开头，后面跟任意字符包括斜杠，直到碰到?或#结束
 // 其中第一个分组是非捕获分组，不会出现在分组结果中
 var reg4 = /(?:\/([^?#]*))/;
-reg4.exec('www.wtl.cn/personal/sss?a=6');  // [ '/personal/sss', 'personal/sss' ]
+reg4.exec('www.wtl.cn/personal/sss?a=6'); // [ '/personal/sss', 'personal/sss' ]
 
 
 //正则表达式转义
@@ -84,10 +84,10 @@ reg4.exec('www.wtl.cn/personal/sss?a=6');  // [ '/personal/sss', 'personal/sss' 
    \1 是指向分组1所捕获到的文本的一个引用，所以能再次被匹配，\2指向分组2的引用，\3以此类推
 */
 var reg5 = /(\w+)\s+\1/g;
-console.log(reg5.exec('hello hello'));  // [ 'hello hello', 'hello' ]
+console.log(reg5.exec('hello hello')); // [ 'hello hello', 'hello' ]
 
 var reg6 = /\w、/;
-console.log(reg6.exec('asf可是、hi、'));  // [ 'i、' ]
+console.log(reg6.exec('asf可是、hi、')); // [ 'i、' ]
 
 var reg7 = /\bt/;
 console.log(reg7.exec("123.tes")); // [ 't' ]
