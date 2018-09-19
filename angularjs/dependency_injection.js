@@ -23,18 +23,18 @@ var giveMe = function(config) {};
 // 已经注册的一些服务，如$scope
 var registry = {};
 var inject = function(func, thisForFunc) {
-    // 获取源码
-    var source = func.toString();
-    // 用正则表达式解析源码
-    var matcher = source.match(/^[^\(]*\(\s*([^\)]*)\)/m);
-    // 解析结果是各个参数的名称
-    var objectIds = matcher[1].split(',');
-    // 查阅出相应的对象，放到数组中准备作为参数传过去
-    var objects = [];
-    for (var i = 0; i < objectIds.length; ++i)
-        objects.push(registry[objectIds[i]]);
-    // 调用这个函数，并且把参数传过去
-    func.apply(thisForFunc || func, objects)
+	// 获取源码
+	var source = func.toString();
+	// 用正则表达式解析源码
+	var matcher = source.match(/^[^\(]*\(\s*([^\)]*)\)/m);
+	// 解析结果是各个参数的名称
+	var objectIds = matcher[1].split(',');
+	// 查阅出相应的对象，放到数组中准备作为参数传过去
+	var objects = [];
+	for (var i = 0; i < objectIds.length; ++i)
+		objects.push(registry[objectIds[i]]);
+	// 调用这个函数，并且把参数传过去
+	func.apply(thisForFunc || func, objects)
 };
 
 inject(giveMe);

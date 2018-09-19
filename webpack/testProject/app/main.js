@@ -8,10 +8,10 @@ document.querySelector('#root').appendChild(Greeter());
 
 // 懒加载，点击按钮才会加载模块。 /**/注释可以指定chunk的名字
 document.querySelector('button').addEventListener('click', e => {
-    return import(/* webpackChunkName: "lazyload" */ './lazyload.js').then(module => {
-        let print = module.default;
-        print();
-    });
+	return import( /* webpackChunkName: "lazyload" */ './lazyload.js').then(module => {
+		let print = module.default;
+		print();
+	});
 });
 
 

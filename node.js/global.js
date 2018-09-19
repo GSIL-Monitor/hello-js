@@ -7,11 +7,11 @@ console.log(__dirname);
 
 //setTimeout(cb, ms) 全局函数在指定的毫秒(ms)数后执行指定函数(cb)。
 //setTimeout() 只执行一次指定函数。返回一个代表定时器的句柄值。
-function printHello(){
-    console.log("hello %s%d","wentianlin",1);
+function printHello() {
+	console.log("hello %s%d", "wentianlin", 1);
 }
-var t = setTimeout(printHello,2000);
-//clearTimeout( t ) 全局函数用于停止一个之前通过 setTimeout() 创建的定时器。 
+var t = setTimeout(printHello, 2000);
+//clearTimeout( t ) 全局函数用于停止一个之前通过 setTimeout() 创建的定时器。
 //参数 t 是通过 setTimeout() 函数创建的定时器。
 clearTimeout(t);
 
@@ -30,7 +30,7 @@ console.trace();
 console.time("获取数据");
 //
 // 执行一些代码
-// 
+//
 console.timeEnd('获取数据');
 
 //process用于描述当前Node.js 进程状态的对象，提供了一个与操作系统的简单接口。
@@ -39,7 +39,7 @@ console.timeEnd('获取数据');
 process.stdout.write("Hello stdout!" + "\n");
 // 通过参数读取
 process.argv.forEach(function(val, index, array) {
-   console.log(index + ': ' + val);
+	console.log(index + ': ' + val);
 });
 // 获取执行路径
 console.log(process.execPath);

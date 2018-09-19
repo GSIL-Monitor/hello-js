@@ -11,8 +11,8 @@ console.log(data.toString());
 console.log("end of sync");
 
 // 异步读
-fs.readFile('input.txt', function (err, data) {
-	if(err) return console.error(err);
+fs.readFile('input.txt', function(err, data) {
+	if (err) return console.error(err);
 	console.log(data.toString());
 });
 console.log('end of async');
@@ -26,7 +26,9 @@ console.log('end of async');
 var rs = fs.createReadStream("input.txt");
 rs.setEncoding("utf-8")
 
-const { sep } = require('path');
+const {
+	sep
+} = require('path');
 console.log(`${sep}`);
 
 fs.stat("input.txt", (err, stats) => {

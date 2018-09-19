@@ -7,16 +7,16 @@ var reader = fs.createReadStream("input.txt");
 reader.setEncoding("UTF8");
 //处理read流事件
 //data
-reader.on("data",function(chunk){
-    str += chunk;
+reader.on("data", function(chunk) {
+	str += chunk;
 });
 //end
-reader.on("end",function(){
-    console.log(str);
+reader.on("end", function() {
+	console.log(str);
 });
 //error
-reader.on("error",function(err){
-    console.log(err.stack);
+reader.on("error", function(err) {
+	console.log(err.stack);
 });
 
 console.log("end of the progra");

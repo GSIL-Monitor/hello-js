@@ -28,11 +28,11 @@
 // 中括号[]表示该模块没有依赖，如果有依赖的话会在中括号写上依赖的模块名字。
 var app = angular.module("myApp", ["ngAnimate", "ngRoute"]);
 app.controller('myCtrl', function($scope) {
-    $scope.firstName = "John";
-    $scope.lastName = "Doe";
-    $scope.fullName = function() {
-        return $scope.firstName + " " + $scope.lastName;
-    }
+	$scope.firstName = "John";
+	$scope.lastName = "Doe";
+	$scope.fullName = function() {
+		return $scope.firstName + " " + $scope.lastName;
+	}
 });
 
 
@@ -57,9 +57,9 @@ app.controller('myCtrl', function($scope) {
 
 // 自定义filter
 app.filter('reverse', function() { //可以注入依赖
-    return function(text) {
-        return text.split("").reverse().join("");
-    }
+	return function(text) {
+		return text.split("").reverse().join("");
+	}
 });
 
 
@@ -72,51 +72,51 @@ app.filter('reverse', function() { //可以注入依赖
 */
 
 // 服务 Service，是AngularJs内建的函数或对象
-app.controller("serviceCtrl", function($scope, $location, $http, $timeout, $interval, myService){
-    // $location，相当于window.location
-    $scope.myUrl = $location.absUrl();
+app.controller("serviceCtrl", function($scope, $location, $http, $timeout, $interval, myService) {
+	// $location，相当于window.location
+	$scope.myUrl = $location.absUrl();
 
-    // $http，向服务器发送请求，响应服务器传来的数据
-    // $http.get('/someUrl', config).then(successCallback, errorCallback);
-    // $http.post('/someUrl', data, config).then(successCallback, errorCallback);
-    // $http({
-    //     method:string,
-    //     url:string,
-    //     params:object,
-    //     data:string or object,
-    //     headers: object,
-    //     transformRequest:function transform(data,headersGetter) or an arra of functions,
-    //     transformResponse:function transform(data,headersGetter) or an arra of functions,
-    //     cache:boolean or Cache object,
-    //     timeout:number,
-    //     withCredentials: boolean
-    // });
-    $http.get("http://localhost/test.php").then(function(response){
-        $scope.myResponse = response.data;
-    }, function(err){
-        console.log(err);
-    });
+	// $http，向服务器发送请求，响应服务器传来的数据
+	// $http.get('/someUrl', config).then(successCallback, errorCallback);
+	// $http.post('/someUrl', data, config).then(successCallback, errorCallback);
+	// $http({
+	//     method:string,
+	//     url:string,
+	//     params:object,
+	//     data:string or object,
+	//     headers: object,
+	//     transformRequest:function transform(data,headersGetter) or an arra of functions,
+	//     transformResponse:function transform(data,headersGetter) or an arra of functions,
+	//     cache:boolean or Cache object,
+	//     timeout:number,
+	//     withCredentials: boolean
+	// });
+	$http.get("http://localhost/test.php").then(function(response) {
+		$scope.myResponse = response.data;
+	}, function(err) {
+		console.log(err);
+	});
 
-    // $timeout，对应window.setTimeout函数
-    $scope.myTimeout = "init";
-    $timeout(function(){
-        $scope.myTimeout = "2 secs later";
-    }, 2000);
+	// $timeout，对应window.setTimeout函数
+	$scope.myTimeout = "init";
+	$timeout(function() {
+		$scope.myTimeout = "2 secs later";
+	}, 2000);
 
-    // $interval, 对应window.setInterval函数
-    $scope.myInterval = new Date().toLocaleString();
-    $interval(function(){
-        $scope.myInterval = new Date().toLocaleString();
-    }, 1000);
+	// $interval, 对应window.setInterval函数
+	$scope.myInterval = new Date().toLocaleString();
+	$interval(function() {
+		$scope.myInterval = new Date().toLocaleString();
+	}, 1000);
 
-    // 自定义service
-    $scope.myReverse = myService.reverse($scope.myUrl);
+	// 自定义service
+	$scope.myReverse = myService.reverse($scope.myUrl);
 });
 // 添加自定义service, 并向该服务中添加函数reverse
 app.service("myService", function() {
-    this.reverse = function(str) {
-        return str.split("").reverse().join("");
-    };
+	this.reverse = function(str) {
+		return str.split("").reverse().join("");
+	};
 });
 
 
@@ -127,10 +127,10 @@ app.service("myService", function() {
 ██   ██ ██ ██   ██ ██      ██         ██    ██  ██  ██  ██
 ██████  ██ ██   ██ ███████  ██████    ██    ██   ████   ███████
 */
-app.controller("directiveCtrl", function($scope){
-    $scope.shout = function(){
-        return "shout";
-    };
+app.controller("directiveCtrl", function($scope) {
+	$scope.shout = function() {
+		return "shout";
+	};
 });
 /*
 我们可以自定义自己的指令
@@ -172,24 +172,24 @@ link : 使用编程的方式修改最终生成的DOM元素实例，添加事件�
 compile : 在使用ng-repeat时，用编程的方式修改DOM模板，从而实现同一个指令跨越多个实例的特性。compile函数也可以返回一个link函数，用它来修改产生的元素实例。
 
 */
-app.directive("helloReplace", function(){
-    return {
-        // 可以作为元素或属性使用<hello-replace /> 或者 <img hello-replace />
-        restrict: "EA",
-        // replace为true，模板直接替换指令元素
-        replace: true,
-        template: "<p>hello-replace p元素直接替换掉div</p>"
-    };
+app.directive("helloReplace", function() {
+	return {
+		// 可以作为元素或属性使用<hello-replace /> 或者 <img hello-replace />
+		restrict: "EA",
+		// replace为true，模板直接替换指令元素
+		replace: true,
+		template: "<p>hello-replace p元素直接替换掉div</p>"
+	};
 });
 
-app.directive("helloTransclude", function(){
-    return {
-        restrict: "A",
-        // replace为false，模板插入到指令元素中
-        // 指令元素中的子节点插入到ng-transclude指示的节点中
-        transclude: true,
-        template: "<p>hello-replace p元素直接替换掉div <strong ng-transclude></strong></p>"
-    };
+app.directive("helloTransclude", function() {
+	return {
+		restrict: "A",
+		// replace为false，模板插入到指令元素中
+		// 指令元素中的子节点插入到ng-transclude指示的节点中
+		transclude: true,
+		template: "<p>hello-replace p元素直接替换掉div <strong ng-transclude></strong></p>"
+	};
 });
 
 /*
@@ -205,117 +205,123 @@ app.directive("helloTransclude", function(){
 */
 
 // @ 单向绑定，必须在标签中先用属性接收
-app.directive("helloColor1", function(){
-    return {
-        restrict: "A",
-        template: "@单向绑定 color : {{color1}}",
-        // 变量名:"@标签中用于接收的属性名"
-        scope: {color1:"@colorAttr"},
+app.directive("helloColor1", function() {
+	return {
+		restrict: "A",
+		template: "@单向绑定 color : {{color1}}",
+		// 变量名:"@标签中用于接收的属性名"
+		scope: {
+			color1: "@colorAttr"
+		},
 		// elem : 指令元素
 		// attrs : 一个包含了指令所在元素的属性的标准化的参数对象
-        link: function(scope, elem, attrs){
-            // 绑定click事件
-            elem.bind("click", function(){
-                // 修改element的css
-                elem.css("background-color", "white");
-                // 由于是单向绑定，此处不会更改父scope中的color值
-                scope.$apply(function(){
+		link: function(scope, elem, attrs) {
+			// 绑定click事件
+			elem.bind("click", function() {
+				// 修改element的css
+				elem.css("background-color", "white");
+				// 由于是单向绑定，此处不会更改父scope中的color值
+				scope.$apply(function() {
 					scope.color1 = "white";
 				});
-            });
-            // 绑定mouseover事件
-            elem.bind("mouseover", function(){
-                // 修改鼠标为pointer
-                elem.css("cursor", "pointer");
-            });
-        },
-    };
+			});
+			// 绑定mouseover事件
+			elem.bind("mouseover", function() {
+				// 修改鼠标为pointer
+				elem.css("cursor", "pointer");
+			});
+		},
+	};
 });
 
 // = 双向绑定
-app.directive("helloColor2", function(){
-    return {
-        restrict: "A",
-        template: "=双向绑定 color : {{color2}}",
-        // 变量名:"=标签中用于接收的属性名"
-        scope: {color2:"=colorAttr"},
+app.directive("helloColor2", function() {
+	return {
+		restrict: "A",
+		template: "=双向绑定 color : {{color2}}",
+		// 变量名:"=标签中用于接收的属性名"
+		scope: {
+			color2: "=colorAttr"
+		},
 		// elem : 指令元素
 		// attrs : 一个包含了指令所在元素的属性的标准化的参数对象
-        link: function(scope, elem, attrs){
-            // 绑定click事件
-            elem.bind("click", function(){
-                // 修改element的css
-                elem.css("background-color", "white");
-                // 双向绑定，此处修改color2会影响父scope中的值
-                scope.$apply(function(){
+		link: function(scope, elem, attrs) {
+			// 绑定click事件
+			elem.bind("click", function() {
+				// 修改element的css
+				elem.css("background-color", "white");
+				// 双向绑定，此处修改color2会影响父scope中的值
+				scope.$apply(function() {
 					scope.color2 = "white";
 				});
-            });
-            // 绑定mouseover事件
-            elem.bind("mouseover", function(){
-                // 修改鼠标为pointer
-                elem.css("cursor", "pointer");
-            });
-        },
-    };
+			});
+			// 绑定mouseover事件
+			elem.bind("mouseover", function() {
+				// 修改鼠标为pointer
+				elem.css("cursor", "pointer");
+			});
+		},
+	};
 });
 
 // & 调用父scope中的函数
-app.directive("helloColor3", function(){
-    return {
-        restrict: "A",
-        template: "&调用父scope中的函数 shout : {{test}}",
-        // 函数名:"&标签中用于接收的属性名"
-        scope: {shout:"&"},
+app.directive("helloColor3", function() {
+	return {
+		restrict: "A",
+		template: "&调用父scope中的函数 shout : {{test}}",
+		// 函数名:"&标签中用于接收的属性名"
+		scope: {
+			shout: "&"
+		},
 		// elem : 指令元素
 		// attrs : 一个包含了指令所在元素的属性的标准化的参数对象
-        link: function(scope, elem, attrs){
-            // 绑定click事件
-            elem.bind("click", function(){
-                // 修改element的css
-                elem.css("background-color", "white");
-                // 双向绑定，此处修改color2会影响父scope中的值
-                scope.$apply(function(){
-                    // 调用父scope中的函数
+		link: function(scope, elem, attrs) {
+			// 绑定click事件
+			elem.bind("click", function() {
+				// 修改element的css
+				elem.css("background-color", "white");
+				// 双向绑定，此处修改color2会影响父scope中的值
+				scope.$apply(function() {
+					// 调用父scope中的函数
 					scope.test = scope.shout();
 				});
-            });
-            // 绑定mouseover事件
-            elem.bind("mouseover", function(){
-                // 修改鼠标为pointer
-                elem.css("cursor", "pointer");
-            });
-        },
-    };
+			});
+			// 绑定mouseover事件
+			elem.bind("mouseover", function() {
+				// 修改鼠标为pointer
+				elem.css("cursor", "pointer");
+			});
+		},
+	};
 });
 
 // require
-app.directive("outDirective", function(){
-    return {
-        restrict: "EA",
-        scope: {},
-        // 如果指令之间需要交互，需要controller
-        controller: function($scope){
-            this.func = function(attr){
-                alert("get message from inDirective : " + attr.message);
-            }
-        },
-    };
+app.directive("outDirective", function() {
+	return {
+		restrict: "EA",
+		scope: {},
+		// 如果指令之间需要交互，需要controller
+		controller: function($scope) {
+			this.func = function(attr) {
+				alert("get message from inDirective : " + attr.message);
+			}
+		},
+	};
 });
-app.directive("inDirective", function(){
-    return {
-        restrict: "EA",
-        scope: {},
-        // 告诉angular在元素以及她的父元素中搜索controller，这样找到的controller实例会作为第四个参数传递给link函数
-        require: "^outDirective",
-        link: function(scope, elem, attr, controller){
-            elem.bind("click", function(){
-                scope.message = "hi outer.";
-                controller.func(scope);
-            });
-            elem.css("cursor", "pointer");
-        }
-    };
+app.directive("inDirective", function() {
+	return {
+		restrict: "EA",
+		scope: {},
+		// 告诉angular在元素以及她的父元素中搜索controller，这样找到的controller实例会作为第四个参数传递给link函数
+		require: "^outDirective",
+		link: function(scope, elem, attr, controller) {
+			elem.bind("click", function() {
+				scope.message = "hi outer.";
+				controller.func(scope);
+			});
+			elem.css("cursor", "pointer");
+		}
+	};
 });
 
 
@@ -328,22 +334,42 @@ app.directive("inDirective", function(){
 ██      ██    ██ ██   ██ ██  ██  ██
 ██       ██████  ██   ██ ██      ██
 */
-app.controller("formCtrl", function($scope){
-    $scope.siteArray = [
-        {site : "Google", url : "http://www.google.com"},
-	    {site : "Runoob", url : "https://www.runoob.com"},
-	    {site : "Taobao", url : "http://www.taobao.com"}
-    ];
-    // 默认选择
-    $scope.selected1 = $scope.siteArray[0];
+app.controller("formCtrl", function($scope) {
+	$scope.siteArray = [{
+			site: "Google",
+			url: "http://www.google.com"
+		},
+		{
+			site: "Runoob",
+			url: "https://www.runoob.com"
+		},
+		{
+			site: "Taobao",
+			url: "http://www.taobao.com"
+		}
+	];
+	// 默认选择
+	$scope.selected1 = $scope.siteArray[0];
 
-    $scope.siteObj = {
-        car01 : {brand : "Ford", model : "Mustang", color : "red"},
-        car02 : {brand : "Fiat", model : "500", color : "white"},
-        car03 : {brand : "Volvo", model : "XC90", color : "black"}
-    }
-    // 默认选择
-    $scope.selected2 = $scope.siteObj.car02;
+	$scope.siteObj = {
+		car01: {
+			brand: "Ford",
+			model: "Mustang",
+			color: "red"
+		},
+		car02: {
+			brand: "Fiat",
+			model: "500",
+			color: "white"
+		},
+		car03: {
+			brand: "Volvo",
+			model: "XC90",
+			color: "black"
+		}
+	}
+	// 默认选择
+	$scope.selected2 = $scope.siteObj.car02;
 })
 
 
@@ -355,23 +381,82 @@ app.controller("formCtrl", function($scope){
    ██    ██   ██ ██████  ███████ ███████
 */
 app.controller("tableCtrl", function($scope, $http) {
-    $scope.tableArray = [
-        {"Name":"Alfreds Futterkiste","City":"Berlin","Country":"Germany"},
-        {"Name":"Ana Trujillo Emparedados y helados","City":"México D.F.","Country":"Mexico"},
-        {"Name":"Antonio Moreno Taquería","City":"México D.F.","Country":"Mexico"},
-        {"Name":"Around the Horn","City":"London","Country":"UK"},
-        {"Name":"B's Beverages","City":"London","Country":"UK"},
-        {"Name":"Berglunds snabbköp","City":"Luleå","Country":"Sweden"},
-        {"Name":"Blauer See Delikatessen","City":"Mannheim","Country":"Germany"},
-        {"Name":"Blondel père et fils","City":"Strasbourg","Country":"France"},
-        {"Name":"Bólido Comidas preparadas","City":"Madrid","Country":"Spain"},
-        {"Name":"Bon app'","City":"Marseille","Country":"France"},
-        {"Name":"Bottom-Dollar Marketse","City":"Tsawassen","Country":"Canada"},
-        {"Name":"Cactus Comidas para llevar","City":"Buenos Aires","Country":"Argentina"},
-        {"Name":"Centro comercial Moctezuma","City":"México D.F.","Country":"Mexico"},
-        {"Name":"Chop-suey Chinese","City":"Bern","Country":"Switzerland"},
-        {"Name":"Comércio Mineiro","City":"São Paulo","Country":"Brazil"}
-    ];
+	$scope.tableArray = [{
+			"Name": "Alfreds Futterkiste",
+			"City": "Berlin",
+			"Country": "Germany"
+		},
+		{
+			"Name": "Ana Trujillo Emparedados y helados",
+			"City": "México D.F.",
+			"Country": "Mexico"
+		},
+		{
+			"Name": "Antonio Moreno Taquería",
+			"City": "México D.F.",
+			"Country": "Mexico"
+		},
+		{
+			"Name": "Around the Horn",
+			"City": "London",
+			"Country": "UK"
+		},
+		{
+			"Name": "B's Beverages",
+			"City": "London",
+			"Country": "UK"
+		},
+		{
+			"Name": "Berglunds snabbköp",
+			"City": "Luleå",
+			"Country": "Sweden"
+		},
+		{
+			"Name": "Blauer See Delikatessen",
+			"City": "Mannheim",
+			"Country": "Germany"
+		},
+		{
+			"Name": "Blondel père et fils",
+			"City": "Strasbourg",
+			"Country": "France"
+		},
+		{
+			"Name": "Bólido Comidas preparadas",
+			"City": "Madrid",
+			"Country": "Spain"
+		},
+		{
+			"Name": "Bon app'",
+			"City": "Marseille",
+			"Country": "France"
+		},
+		{
+			"Name": "Bottom-Dollar Marketse",
+			"City": "Tsawassen",
+			"Country": "Canada"
+		},
+		{
+			"Name": "Cactus Comidas para llevar",
+			"City": "Buenos Aires",
+			"Country": "Argentina"
+		},
+		{
+			"Name": "Centro comercial Moctezuma",
+			"City": "México D.F.",
+			"Country": "Mexico"
+		},
+		{
+			"Name": "Chop-suey Chinese",
+			"City": "Bern",
+			"Country": "Switzerland"
+		},
+		{
+			"Name": "Comércio Mineiro",
+			"City": "São Paulo",
+			"Country": "Brazil"
+		}
+	];
 });
 
 
@@ -383,11 +468,11 @@ app.controller("tableCtrl", function($scope, $http) {
  ██████ ███████ ██  ██████ ██   ██
 */
 
-app.controller("clickCtrl", function($scope){
-    $scope.myVar = false;
-    $scope.toggle = function(){
-        $scope.myVar = !$scope.myVar;
-    }
+app.controller("clickCtrl", function($scope) {
+	$scope.myVar = false;
+	$scope.toggle = function() {
+		$scope.myVar = !$scope.myVar;
+	}
 })
 
 
@@ -400,18 +485,18 @@ app.controller("clickCtrl", function($scope){
 ██   ██  ██████   ██████     ██    ███████
 */
 
-app.config(function($routeProvider){
-    // $routeProvider.when(url,{
-    //     template:string, //在ng-view中插入简单的html内容
-    //     templateUrl:string, //在ng-view中插入html模版文件
-    //     controller:string,function / array, //在当前模版上执行的controller函数
-    //     controllerAs:string, //为controller指定别名
-    //     redirectTo:string,function, //重定向的地址
-    //     resolve:object<key,function> //指定当前controller所依赖的其他模块
-    // });
-    $routeProvider.when("/home",{
-        template: "Home",
-    }).when("/about",{
-        template: "About",
-    });
+app.config(function($routeProvider) {
+	// $routeProvider.when(url,{
+	//     template:string, //在ng-view中插入简单的html内容
+	//     templateUrl:string, //在ng-view中插入html模版文件
+	//     controller:string,function / array, //在当前模版上执行的controller函数
+	//     controllerAs:string, //为controller指定别名
+	//     redirectTo:string,function, //重定向的地址
+	//     resolve:object<key,function> //指定当前controller所依赖的其他模块
+	// });
+	$routeProvider.when("/home", {
+		template: "Home",
+	}).when("/about", {
+		template: "About",
+	});
 })
