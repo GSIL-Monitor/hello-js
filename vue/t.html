@@ -13,11 +13,47 @@
   <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
   <style lang="less">
+    html, body {
+      height: 100%;
+      min-width: 800px;
+    }
+
+
+    .container .column{
+      float: left;
+      height: 400px;
+    }
+    .main-container {
+      width: 100%;
+      background-color: pink;
+    }
+    .main {
+      margin: 0 150px;
+    }
+    .left {
+      width: 150px;
+      background-color: lightblue;
+      margin-left: -100%;
+    }
+    .right {
+      width: 150px;
+      background-color: lightblue;
+      margin-left: -150px;
+    }
 
   </style>
 </head>
 
 <body>
+
+<div class="container">
+  <div class="main-container column">
+    <div class="main">中间弹性区</div>
+  </div>
+  <div class="left column">左边栏</div>
+  <div class="right column">右边栏</div>
+</div>
+
 
 
 

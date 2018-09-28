@@ -1,12 +1,8 @@
-function sometime(n) {
-	return new Promise((resove,reject) => {
-		setTimeout(reject(n+200), n);
-	});
+// var val = 100;
+function f() {
+  console.log(val);
+  var val = 200;
+  console.log(val);
 }
-
-async function test () {
-	let res = await sometime(200);
-	// console.dir(res);
-	console.log(res);
-}
-test();
+f();
+console.log(val);

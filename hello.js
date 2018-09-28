@@ -395,6 +395,7 @@ let const 声明的全局变量不属于顶层变量
 	// 由于成员是引用，修改原成员会引起arr5成员的变化
 	arr4[0].a = 2;
 	arr5; // [ { a: 2 } ]
+	// ...是浅拷贝，深拷贝使用 JSON.parse(JSON.stringify(arr))
 
 	// 对于实现了Iterator接口的对象，都可用...转换为数组
 	// Map Set结构、 Generator函数等
@@ -507,6 +508,9 @@ let const 声明的全局变量不属于顶层变量
 	//         ···
 	//     }
 	// });
+
+	// 深拷贝
+	// let newObj = JSON.parse(JSON.stringify(oldObj))
 
 	// 遍历
 	// for...in循环: 只遍历对象自身的和继承的可枚举的属性。
