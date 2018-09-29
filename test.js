@@ -1,8 +1,13 @@
-// var val = 100;
-function f() {
-  console.log(val);
-  var val = 200;
-  console.log(val);
+function f(n) {
+  let arr = [1, 2];
+  if(n > 1){
+
+    for(let i = 2; i <= n; i++){
+      arr[i] = arr[i-1] + arr[i-2];
+    }
+
+  }
+  return arr[n];
 }
-f();
-console.log(val);
+
+console.log(f(3));
