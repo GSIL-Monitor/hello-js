@@ -445,7 +445,7 @@ let const 声明的全局变量不属于顶层变量
 		return item * sum
 	}, 1); // 24
 
-	// 遍历arr7并创建按照callback创建新数组，length与原来一致，但是filter就可能减少
+	// 遍历arr7并按照callback创建新数组，length与原来一致，但是filter就可能减少
 	let arr9 = arr8.map((item, index) => {
 		return item * item
 	});
