@@ -652,6 +652,9 @@ let const 声明的全局变量不属于顶层变量
 		// ...
 	}
 
+	// 利用Object.entries(obj)快速转map
+	// const m = new map(Object.entries(obj))
+
 	// WeakMap 键名只能是对象，键名不计入引用计数
 
 }
