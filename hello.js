@@ -971,37 +971,54 @@ let const 声明的全局变量不属于顶层变量
 	// async函数返回一个 Promise 对象，可以使用then方法添加回调函数。
 	// 当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。
 
-	/*
+
 	const fs = require('fs');
-	const readFile = function(fileName) {
-	    return new Promise(function(resolve, reject) {
-	        fs.readFile(fileName, function(error, data) {
-	            if (error) return reject(error);
-	            resolve(data);
-	        });
-	    });
+	const readFile = function (fileName) {
+		return new Promise(function (resolve, reject) {
+			fs.readFile(fileName, function (error, data) {
+				if (error) return reject(error);
+				resolve(data);
+			});
+		});
 	};
-	const asyncReadFile = async function() {
-	    const f1 = await readFile('./.babelrc').catch(err => { console.log(err); });
-	    const f2 = await readFile('./test.js').catch(err => { console.log(err); });
-	    console.log(f1.toString());
-	    console.log(f2.toString());
-	};
-	*/
+	// const asyncReadFile = async function () {
+	// 	const f1 = await readFile('./.babelrc').catch(err => {
+	// 		console.log(err);
+	// 	});
+	// 	const f2 = await readFile('./test.js').catch(err => {
+	// 		console.log(err);
+	// 	});
+	// 	console.log(f1.toString());
+	// 	console.log(f2.toString());
+	// };
+	// 两个 readFile 可以同时进行，用 Promise.all([...])，返回一个数组
+	const asyncReadFile = async function () {
+		const [a, b] = await Promise.all([
+			readFile('./.babelrc').catch(err => console.log(err)),
+			readFile('./test.js').catch(err => console.log(err))
+		])
+		return {
+			babelrc: a.toString(),
+			test: b.toString()
+		}
+		// console.log(a.toString(), b.toString());
+	}
+	asyncReadFile().then(res => {
+		console.log(res.babelrc, res.test);
+	})
 
 
 	// async函数return返回的值会被then方法的回调函数接收到
 	// async函数内部抛出错误，会导致返回的 Promise 对象变为reject状态，被catch回调函数接收
-	/*
-	async function getStockPriceByName(name) {
-	    const symbol = await getStockSymbol(name);
-	    const stockPrice = await getStockPrice(symbol);
-	    return stockPrice;
-	}
-	getStockPriceByName('goog').then(function(result) {
-	    console.log(result);
-	});
-	*/
+	// async function getStockPriceByName(name) {
+	// 	const symbol = await getStockSymbol(name);
+	// 	const stockPrice = await getStockPrice(symbol);
+	// 	return stockPrice;
+	// }
+	// getStockPriceByName('goog').then(function (result) {
+	// 	console.log(result);
+	// });
+
 }
 
 

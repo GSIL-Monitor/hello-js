@@ -35,7 +35,8 @@ var url = 'http://www.dataguru.com:80/lession/sss?userid=123#fragment';
 // exec可以多次执行，每次从lastIndex开始匹配
 var res = patUrl.exec(url);
 /*
-[ 'http://www.dataguru.com:80/lession/sss?userid=123#fragment',
+[
+  'http://www.dataguru.com:80/lession/sss?userid=123#fragment',
   'http',
   '//',
   'www.dataguru.com',
@@ -44,7 +45,8 @@ var res = patUrl.exec(url);
   'userid=123',
   'fragment',
   index: 0,
-  input: 'http://www.dataguru.com:80/lession/sss?userid=123#fragment' ]
+  input: 'http://www.dataguru.com:80/lession/sss?userid=123#fragment'
+]
 */
 
 
@@ -73,20 +75,33 @@ reg3.exec('http:xxx:'); //["http:xxx:", "xxx:"]
 var reg4 = /(?:\/([^?#]*))/;
 reg4.exec('www.wtl.cn/personal/sss?a=6'); // [ '/personal/sss', 'personal/sss' ]
 
+// ES8 命名分组  (?<name>)
+// let re1 = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/u;
+// let res = re1.exec('2018-10-21')
+// [
+//   '2018-10-21', '2018', '10', '21', index: 0, input: '2018-10-21',
+//   groups: {
+//     year: '2018',
+//     month: '10',
+//     day: '21'
+//   }
+// ]
+// 正则中可以时候用 \k<name> 引用命名分组
+
 
 //正则表达式转义
 /*
-   \f 换页符
-   \n 换行符
-   \r 回车
-   \t 制表符
-   \b 指定一个字边界，方便用于对文本字边界进行匹配  /\bt/会匹配'%&_tes'中的t
-   \d 表示数字，等同于[0-9] \D表示相反 [^0-9]
-   \s  等同于[\f\n\r\t\u000B\u0020\u00A0\u2028\u2029] 这是Unicode空白符的一个不完全子集。\S 则表示与其相反：[^\f\n\r\t\u000B\u0020\u00A0\u2028\u2029]
-   \w [0-9A-Z_a-z]  \W相反 [^0-9A-Z_a-z]
-    [A-Za-z\u00C0-\u1FFF\u2800-\uFFFD],包括了所有的Unicode字母，但也包括成千上万非字母的字符
+  \f 换页符
+  \n 换行符
+  \r 回车
+  \t 制表符
+  \b 指定一个字边界，方便用于对文本字边界进行匹配  /\bt/会匹配'%&_tes'中的t
+  \d 表示数字，等同于[0-9] \D表示相反 [^0-9]
+  \s  等同于[\f\n\r\t\u000B\u0020\u00A0\u2028\u2029] 这是Unicode空白符的一个不完全子集。\S 则表示与其相反：[^\f\n\r\t\u000B\u0020\u00A0\u2028\u2029]
+  \w [0-9A-Z_a-z]  \W相反 [^0-9A-Z_a-z]
+  [A-Za-z\u00C0-\u1FFF\u2800-\uFFFD],包括了所有的Unicode字母，但也包括成千上万非字母的字符
 
-   \1 是指向分组1所捕获到的文本的一个引用，所以能再次被匹配，\2指向分组2的引用，\3以此类推
+  \1 是指向分组1所捕获到的文本的一个引用，所以能再次被匹配，\2指向分组2的引用，\3以此类推
 */
 var reg5 = /(\w+)\s+\1/g;
 console.log(reg5.exec('hello hello')); // [ 'hello hello', 'hello' ]
