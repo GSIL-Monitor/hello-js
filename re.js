@@ -76,8 +76,8 @@ var reg4 = /(?:\/([^?#]*))/;
 reg4.exec('www.wtl.cn/personal/sss?a=6'); // [ '/personal/sss', 'personal/sss' ]
 
 // ES8 命名分组  (?<name>)
-// let re1 = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/u;
-// let res = re1.exec('2018-10-21')
+let re1 = /(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})/u;
+re1.exec('2018-10-21')
 // [
 //   '2018-10-21', '2018', '10', '21', index: 0, input: '2018-10-21',
 //   groups: {
@@ -87,6 +87,11 @@ reg4.exec('www.wtl.cn/personal/sss?a=6'); // [ '/personal/sss', 'personal/sss' ]
 //   }
 // ]
 // 正则中可以时候用 \k<name> 引用命名分组
+let sameword = /(?<fruit>apple | orange)==\k<fruit>/u;
+// 在replace中使用命名分组，交换名和姓
+let re2 = /(?<firstName>[A-Za-z]+) (?<lastName>[A-Za-z]+$)/u;
+'Dwyane Wade'.replace(re2, '$<lastName> $<firstName>') // Wade Dwyane
+
 
 
 //正则表达式转义

@@ -12,6 +12,10 @@
       background: #f3beb8;
       border: 1px solid #f09898;
     }
+    body > div{
+      padding: 10px 0;
+      border-bottom: 1px solid #aaa;
+    }
   </style>
 </head>
 
@@ -444,10 +448,17 @@
 
   <!-- 在组件上使用v-model -->
   <div id="custom-input-demo">
-    <!-- some-attrs 没有在 props 中接受，默认情况下会被组件的根元素 label 继承 -->
-    <!-- 如果设置了 inherritAttrs=false 后 label 就不会继承 some-attrs  -->
-    <!-- 而子元素 input 有 v-bind:$attrs 所以 some-attrs="aaa" 会被组件内的 input 继承 -->
-    <custom-input v-model="searchText" :label="label" @focus="console.log(event.target.value)" some-attrs="aaa"></custom-input>
+    <!-- placeholder 没有在 props 中接受，默认情况下会被组件的根元素 label 继承 -->
+    <!-- 如果设置了 inherritAttrs=false 后 label 就不会继承 placeholder  -->
+    <!-- 而子元素 input 有 v-bind="$attrs" 所以 placeholder 属性会被组件内的 input 继承 -->
+    <!-- 子元素监听事件可以用 v-on="$listeners" 包含了父作用域中v-on的监听器，不包括.native -->
+    <custom-input
+      v-model="searchText"
+      :label="label"
+      @input="console.log(event.target.value)"
+      @focus="console.log('focus event')"
+      placeholder="input and check console">
+    </custom-input>
     <p>{{searchText}}</p>
     <custom-checkbox v-model="foo" value="some value"></custom-checkbox>
   </div>
@@ -465,31 +476,28 @@
     	// 默认情况下，不被props识别的属性将会自动继承到组件的根元素上，设置为false时，跟元素不会继承这些属性
     	inheritAttrs: false,
     	props: ['label', 'value'],
-    	// 如果需要发出多个事件，可以和$listeners合并到一个对象里，然后v-on="对象"
+    	// 如果需要发出多个事件，可以和$listeners合并到一个对象里，然后v-on="listeners"
     	computed: {
-    		inputListeners: function() {
-    			let vm = this;
-    			return Object.assign({}, this.$listeners, {
-    				input: function(event) {
-    					vm.$emit('input', event.target.value);
+    		listeners() {
+    			return {
+            ...this.$listeners,
+    				input: event => {
+    					this.$emit('input', event.target.value);
     				},
-    				focus: function(event) {
-    					vm.$emit('focus');
-    				}
-    			})
+            // 因为focus只是触发了focus事件，没有任何改动，所以可以不显式的声明
+    				// focus: event => {
+    				// 	this.$emit('focus');
+    				// }
+    			}
     		}
     	},
     	// 使用 v-bind=$attrs 可以在非根元素上继承不被props识别的属性(一般配合inheritAttrs:false使用)
-    	// input不是根元素，所以想在 custom-input 标签中监听输入框的原生事件(例如input)时
+    	// input不是根元素，所以想在 custom-input 标签中监听输入框的原生事件(例如input)时使用$listeners
     	template: `
-            <label>
-                {{label}}
-                <input
-                    v-bind=$attrs
-                    v-bind:value="value"
-                    v-on="inputListeners"
-                />
-            </label>`
+        <label>
+          {{label}}
+          <input v-bind="$attrs" :value="value" v-on="listeners" />
+        </label>`
     });
     Vue.component('custom-checkbox', {
     	// 默认情况下v-model会把实例的属性绑定到value，event为input
@@ -504,20 +512,19 @@
     		value: String
     	},
     	template: `
-            <label>
-                <input
-                    type="checkbox"
-                    v-bind:checked="checked"
-                    v-on:change="$emit('change', $event.target.checked)"
-                />
-                {{value}}
-            </label>`
+        <label>
+          <input
+            type="checkbox"
+            :checked="checked"
+            v-on:change="$emit('change', $event.target.checked)" />
+          {{value}}
+        </label>`
     })
     let customInputDemo = new Vue({
     	el: '#custom-input-demo',
     	data: {
     		label: 'input:',
-    		searchText: 'emm...',
+    		searchText: '',
     		foo: true,
     	}
     })

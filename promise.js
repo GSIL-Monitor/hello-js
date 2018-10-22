@@ -22,12 +22,14 @@ promist.then(function(value) {
 	"error"
 });
 // 或者通过then、catch分别制定resolved和rejected
-promist.then(function(value) {
-	"success";
-});
-promist.catch(function(error) {
-	"error";
-});
+// .finally(() => {}) 成功失败都会进行的回调，一般用于清理工作
+promist.then((val) => {
+	'success'
+}).catch((err) => {
+	'err'
+}).finally(() => {
+	'always executed'
+})
 
 
 // 最简单的例子
@@ -71,6 +73,8 @@ Promise.race([p1, p2]).then(function(result) {
 	// race:
 	// p2 result
 });
+
+
 
 
 // 实现同步机制的例子
