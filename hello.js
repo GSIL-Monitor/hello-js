@@ -395,6 +395,7 @@ let const 声明的全局变量不属于顶层变量
 	// 由于成员是引用，修改原成员会引起arr5成员的变化
 	arr4[0].a = 2;
 	arr5; // [ { a: 2 } ]
+	// ...是浅拷贝，深拷贝使用 JSON.parse(JSON.stringify(arr))
 
 	// 对于实现了Iterator接口的对象，都可用...转换为数组
 	// Map Set结构、 Generator函数等
@@ -444,7 +445,7 @@ let const 声明的全局变量不属于顶层变量
 		return item * sum
 	}, 1); // 24
 
-	// 遍历arr7并创建按照callback创建新数组，length与原来一致，但是filter就可能减少
+	// 遍历arr7并按照callback创建新数组，length与原来一致，但是filter就可能减少
 	let arr9 = arr8.map((item, index) => {
 		return item * item
 	});
@@ -477,7 +478,32 @@ let const 声明的全局变量不属于顶层变量
 	// 输出模块更加简洁
 	// module.exports = { getItem, setItem, clear }
 
-	// Object.assign(target, source) 浅拷贝，
+	// Object.create(proto, propDescriptors)
+	// 创建返回一个新的对象，其 __proto__ 指向 proto ，属性为 propDescriptors 中定义的属性
+	// 第二个参数 propDescriptors 可选，是一个对象，里面包含一到多个属性描述符：
+	/*
+	{
+		foo: {
+			value: "hello"
+			writable: true,
+			enumerable: true,
+			configurable: true
+		},
+		bar: {
+			// writable 默认为 false，不可写
+			// enumerable 默认为 false 不可枚举
+			configurable: false,
+			get: function () {
+				return 10
+			},
+			set: function (value) {
+				console.log("Setting `o.bar` to", value);
+			}
+		}
+	}
+	*/
+
+	// Object.assign(target, source) 浅拷贝，将 source 中所有可枚举属性复制到 target
 	// 并且只会克隆自身的值，不会克隆原型链上继承的值
 	const target = {
 		a: 1,
@@ -500,19 +526,36 @@ let const 声明的全局变量不属于顶层变量
 	}
 	// 为对象添加属性、函数
 	// Object.assign(SomeClass.prototype, {
-	//     someMethod(arg1, arg2) {
-	//         ···
-	//     },
-	//     anotherMethod() {
-	//         ···
-	//     }
+	// 	someMethod(arg1, arg2) {···},
+	// 	anotherMethod() {···}
 	// });
 
+	// 使用 assign 有一个缺陷：不能拷贝属性的 setter 和 getter
+	// 为此 ES6新增两个define函数
+	// Object.defineProperty(obj, propName, propDescriptor) 添加单个属性
+	// Object.defineProperties(obj, propDescriptors)				批量添加属性
+	// 其中 descriptor 是属性描述符，可以用以下函数获取
+	// Object.getOwnPropertyDescriptor(obj, propName)
+	// Object.getOwnPropertyDescriptors(obj)
+	// 以上的 clone 函数可以改写为一下形式
+	function clone2(origin) {
+		return Object.create(
+			Object.getPrototypeOf(origin),
+			Object.getOwnPropertyDescriptors(origin)
+		)
+	}
+
+
+	// 深拷贝
+	// let newObj = JSON.parse(JSON.stringify(oldObj))
+
 	// 遍历
-	// for...in循环: 只遍历对象自身的和继承的可枚举的属性。
+	// for...in循环: 遍历对象自身的和原型链上的可枚举的属性。一般配合obj.hasOwnProperty(prop)使用
 	// Object.keys(): 返回对象自身的所有可枚举的属性的键名数组（不含 Symbol 属性）。
-	// Object.getOwnPropertyNames(obj): 返回对象自身的所有属性（不含 Symbol 属性，但是包括不可枚举属性）的键名
-	// 我们一般只关心当前对象的属性，所以尽量用Object.keys(),速度比forin快很多
+	// Object.getOwnPropertyNames(obj): 返回对象自身的所有普通属性键名，不含 Symbol 属性，但是包括不可枚举属性
+	// Object.getOwnPropertySymbols(obj): 返回对象自身的symbol属性键名，包括不可枚举属性
+	// Reflect.ownKeys(obj) 返回自身的所有属性键名数组，包括symbol，包括不可枚举属性
+	// 我们一般只关心当前对象的属性，所以尽量用Object.keys(obj).forEach(),速度比for...in快很多
 	Object.keys(Person).forEach((k) => {
 		Person[k];
 	})
@@ -524,8 +567,6 @@ let const 声明的全局变量不属于顶层变量
 	Object.setPrototypeOf(rec, Object.prototype);
 	// 相当于rec.__proto__
 	Object.getPrototypeOf(rec); // {}
-
-	// obj.hasOwnProperty(prop) 判断某个对象是否含有指定的属性,忽略掉那些从原型链上继承到的属性。
 
 
 }
@@ -648,6 +689,9 @@ let const 声明的全局变量不属于顶层变量
 		// ...
 	}
 
+	// 利用Object.entries(obj)快速转map
+	// const m = new map(Object.entries(obj))
+
 	// WeakMap 键名只能是对象，键名不计入引用计数
 
 }
@@ -719,6 +763,17 @@ let const 声明的全局变量不属于顶层变量
 	// Reflect.getOwnPropertyDescriptor(target, name);
 	// Reflect.getPrototypeOf(target);
 	// Reflect.setPrototypeOf(target, prototype);
+
+
+	// Reflect.setPrototypeOf(obj, newProto) 返回成功与否 true false
+	// 相当于 obj.__proto__ = newProto
+	// Reflect.getPrototypeOf(obj)
+	// 相当于 obj.__proto__
+
+
+
+	// 或者使用 Object.defineProperties(obj, descs) 和 Object.getOwnPropertyDescriptors(obj) 批量添加属性
+	// Reflect中暂时还没有定义
 }
 
 
@@ -763,7 +818,7 @@ let const 声明的全局变量不属于顶层变量
 	// getOwnPropertyDescriptor(target, propKey)
 	// 拦截Object.getOwnPropertyDescriptor(proxy, propKey)，返回属性的描述对象。
 	// defineProperty(target, propKey, propDesc)
-	// 拦截Object.defineProperty(proxy, propKey, propDesc）、Object.defineProperties(proxy, propDescs)，返回一个布尔值。
+	// 拦截Object.defineProperty(proxy, propKey, propDesc)、Object.defineProperties(proxy, propDescs)，返回一个布尔值。
 	// preventExtensions(target)
 	// 拦截Object.preventExtensions(proxy)，返回一个布尔值。
 	// getPrototypeOf(target)
@@ -964,37 +1019,51 @@ let const 声明的全局变量不属于顶层变量
 	// async函数返回一个 Promise 对象，可以使用then方法添加回调函数。
 	// 当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体内后面的语句。
 
-	/*
+
 	const fs = require('fs');
-	const readFile = function(fileName) {
-	    return new Promise(function(resolve, reject) {
-	        fs.readFile(fileName, function(error, data) {
-	            if (error) return reject(error);
-	            resolve(data);
-	        });
-	    });
+	const readFile = function (fileName) {
+		return new Promise(function (resolve, reject) {
+			fs.readFile(fileName, function (error, data) {
+				if (error) return reject(error);
+				resolve(data);
+			});
+		});
 	};
-	const asyncReadFile = async function() {
-	    const f1 = await readFile('./.babelrc').catch(err => { console.log(err); });
-	    const f2 = await readFile('./test.js').catch(err => { console.log(err); });
-	    console.log(f1.toString());
-	    console.log(f2.toString());
-	};
-	*/
-
-
-	// async函数return返回的值会被then方法的回调函数接收到
+	// 两个 readFile 可以同时进行，用 Promise.all([...])，返回一个数组
 	// async函数内部抛出错误，会导致返回的 Promise 对象变为reject状态，被catch回调函数接收
-	/*
-	async function getStockPriceByName(name) {
-	    const symbol = await getStockSymbol(name);
-	    const stockPrice = await getStockPrice(symbol);
-	    return stockPrice;
+	const asyncReadFile = async function () {
+		const [a, b] = await Promise.all([
+			readFile('./.babelrc').catch(err => console.log(err)),
+			readFile('./test.js').catch(err => console.log(err))
+		])
+		// async函数return返回的值会被then方法的回调函数接收到
+		return {
+			babelrc: a.toString(),
+			test: b.toString()
+		}
 	}
-	getStockPriceByName('goog').then(function(result) {
-	    console.log(result);
-	});
-	*/
+	asyncReadFile().then(res => {
+		// console.log(res.babelrc, res.test);
+	})
+
+
+
+
+
+	// for await 循环，在执行下一步之前会等待每个 Promise 完成
+	const promises = [
+		new Promise(resolve => resolve('1')),
+		new Promise(resolve => resolve('2')),
+		new Promise(resolve => resolve('3')),
+	]
+	async function forawait() {
+		for await (const val of promises) {
+			console.log(val);
+		}
+		// 1 2 3
+		// 如果直接循环，log出来是三个promise对象
+	}
+
 }
 
 
