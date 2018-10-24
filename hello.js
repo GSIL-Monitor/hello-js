@@ -714,16 +714,16 @@ let const 声明的全局变量不属于顶层变量
 	/*
 	// 老写法
 	try {
-	    Object.defineProperty(target, property, attributes);
-	    // success
+		Object.defineProperty(target, property, attributes);
+		// success
 	} catch (e) {
-	    // failure
+		// failure
 	}
 	// 新写法
 	if (Reflect.defineProperty(target, property, attributes)) {
-	    // success
+		// success
 	} else {
-	    // failure
+		// failure
 	}
 	*/
 
@@ -738,26 +738,26 @@ let const 声明的全局变量不属于顶层变量
 	// 4.Reflect对象的方法与Proxy对象的方法一一对应。写Proxy时完成默认行为，作为修改行为的基础。
 	/*
 	Proxy(target, {
-	    set: function(target, name, value, receiver) {
-	        var success = Reflect.set(target, name, value, receiver);
-	        if (success) {
-	            log('property ' + name + ' on ' + target + ' set to ' + value);
-	        }
-	        return success;
-	    }
+		set: function (target, name, value, receiver) {
+			var success = Reflect.set(target, name, value, receiver);
+			if (success) {
+				log('property ' + name + ' on ' + target + ' set to ' + value);
+			}
+			return success;
+		}
 	});
 	*/
 
 
 	// Reflect的静态方法
 	// Reflect.apply(target, thisArg, args);
-	// Reflect.construct(target, args);
-	// Reflect.get(target, name, receiver);
-	// Reflect.set(target, name, value, receiver);
+	// Reflect.construct(target, args);  							相当于 new target(args)
+	// Reflect.get(target, name, receiver);  					相当于 obj.name
+	// Reflect.set(target, name, value, receiver);  	相当于 obj.name =
+	// Reflect.has(target, name);											相当于 name in obj 检查原型链
+	// Reflect.deleteProperty(target, name);  				相当于 delete obj[name]
 	// Reflect.defineProperty(target, name, desc);
-	// Reflect.deleteProperty(target, name);
-	// Reflect.has(target, name);
-	// Reflect.ownKeys(target); // 基本等同于Object.getOwnPropertyNames与Object.getOwnPropertySymbols之和
+	// Reflect.ownKeys(target); 					基本等同于Object.getOwnPropertyNames与Object.getOwnPropertySymbols之和
 	// Reflect.isExtensible(target);
 	// Reflect.preventExtensions(target);
 	// Reflect.getOwnPropertyDescriptor(target, name);
@@ -765,15 +765,6 @@ let const 声明的全局变量不属于顶层变量
 	// Reflect.setPrototypeOf(target, prototype);
 
 
-	// Reflect.setPrototypeOf(obj, newProto) 返回成功与否 true false
-	// 相当于 obj.__proto__ = newProto
-	// Reflect.getPrototypeOf(obj)
-	// 相当于 obj.__proto__
-
-
-
-	// 或者使用 Object.defineProperties(obj, descs) 和 Object.getOwnPropertyDescriptors(obj) 批量添加属性
-	// Reflect中暂时还没有定义
 }
 
 
