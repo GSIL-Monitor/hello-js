@@ -532,7 +532,7 @@ let const 声明的全局变量不属于顶层变量
 
 	// 使用 assign 有一个缺陷：不能拷贝属性的 setter 和 getter
 	// 为此 ES6新增两个define函数
-	// Object.defineProperty(obj, propName, propDescriptor) 添加单个属性
+	// Object.defineProperty(obj, propName, propDescriptor) 添加单个属性，主要用来添加getter setter函数
 	// Object.defineProperties(obj, propDescriptors)				批量添加属性
 	// 其中 descriptor 是属性描述符，可以用以下函数获取
 	// Object.getOwnPropertyDescriptor(obj, propName)

@@ -27,7 +27,8 @@
 
   <style>
     /* 三角形 */
-    .san_shang {
+    .san-shang {
+      display: inline-block;
       /* 设置容器内容为一个点 */
       width: 0;
       height: 0;
@@ -37,7 +38,6 @@
       border-left: 50px solid transparent;
       /* 同理，向右延伸50 */
       border-right: 50px solid transparent;
-      margin-bottom: 20px;
     }
 
     /* 平行四边形 */
@@ -49,12 +49,24 @@
       border: 1px solid #58a;
       text-align: center;
     }
-
     .parallelogram a {
       display: inline-block;
       /* 沿x轴倾斜回来 */
       transform: skewX(20deg);
     }
+
+    .arrow-right {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      /* 设置上右边框 */
+      border-top: 1px solid #000;
+      border-right: 1px solid #000;
+      /* 顺时针旋转45度 */
+      transform: rotate(45deg);
+    }
+
+
   </style>
 
 
@@ -73,10 +85,13 @@
 
 <body>
   <!-- css边框画三角形 -->
-  <div class="san_shang"></div>
+  <div class="san-shang"></div>
   <!-- 平行四边形 -->
   <div class="parallelogram">
     <a href="#sad">sad</a>
+  </div>
+  <!-- 朝右的箭头 -->
+  <div class="arrow-right">
   </div>
 
 
