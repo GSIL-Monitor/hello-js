@@ -15,7 +15,7 @@
 // 但是g只要后面存在即可匹配，y确保匹配必须从lastIndex后第一个字符开始就要匹配
 // 实际上y就是加了头部匹配标志^的g
 // s ES6 使通配符.可以匹配任何字符 包括换行\n、回车\r
-
+asd
 var reg = /a/gimy;
 // re对象具有属性
 reg.global; // true
