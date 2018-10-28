@@ -464,7 +464,7 @@ let const 声明的全局变量不属于顶层变量
 {
 	let birth = "1994-11-14";
 	// 允许直接写入变量和函数(不需要加function关键字)，更加简洁
-	const Person = {
+	const person = {
 		name: '张三',
 		// 等同于birth: birth
 		birth,
@@ -475,6 +475,15 @@ let const 声明的全局变量不属于顶层变量
 		// 也可以 [表达式]:值 来定义 等同于"abc":123
 		["a" + "bc"]: 123,
 	};
+
+	// 获取对象属性值，使用||来提供默认值，就不会返回undefined了
+	const gender = person.gender || '男'		// 男
+	// person.family是undefined，访问其属性会报错，可以使用&&来避免报错
+	const son = person.family && person.family.son  // undefined
+	// 对象赋值是引用，x和person指向同一片内存
+	const x = person;
+
+
 	// 输出模块更加简洁
 	// module.exports = { getItem, setItem, clear }
 
@@ -556,8 +565,8 @@ let const 声明的全局变量不属于顶层变量
 	// Object.getOwnPropertySymbols(obj): 返回对象自身的symbol属性键名，包括不可枚举属性
 	// Reflect.ownKeys(obj) 返回自身的所有属性键名数组，包括symbol，包括不可枚举属性
 	// 我们一般只关心当前对象的属性，所以尽量用Object.keys(obj).forEach(),速度比for...in快很多
-	Object.keys(Person).forEach((k) => {
-		Person[k];
+	Object.keys(person).forEach((k) => {
+		person[k];
 	})
 
 	// __proto__ 与 prototype
