@@ -121,6 +121,84 @@ for (let k in tom) {
 }
 
 
+/*
+██ ███    ██ ██   ██ ███████ ██████  ██ ████████
+██ ████   ██ ██   ██ ██      ██   ██ ██    ██
+██ ██ ██  ██ ███████ █████   ██████  ██    ██
+██ ██  ██ ██ ██   ██ ██      ██   ██ ██    ██
+██ ██   ████ ██   ██ ███████ ██   ██ ██    ██
+*/
+// 1.使用 call 改变构造函数的 this 实现继承
+function Parent() {
+	this.name = 'parent'
+	this.arr = [1, 2, 3]
+}
+Parent.prototype.sayHello = () => {}
+function Child1() {
+	Parent.call(this)
+	this.type = 'child1'
+}
+// 只能继承父类实例属性/方法，不能继承原型属性/方法
+let child1 = new Child1()  // Child1 { name: 'parent', type: 'child1' }
+
+// 2.借助原型链实现继承
+function Child2() {
+	this.type = 'child2'
+}
+// 将子类的原型对象赋值为父类的实例，这样既继承了父类的实例方法又继承了父类的原型方法
+Child2.prototype = new Parent()
+// 子类实例的 __proto__ 指向构造函数的 prototype，即父类的实例对象，继承了父类的实例属性/方法
+// 父类的实例 __proto__ 又指向父类构造函数 prototype，因此也继承了父类的原型属性/方法
+let child2 = new Child2()
+// 这样的缺点是: 父类的引用型实例属性 保存在子类实例的 __proto__ ，因此是子类实例之间共享的
+// child2没有自己的 arr 属性， 修改 child2.arr 会影响其他的 child
+child22 = new Child2()
+child2.arr.push(4)
+console.log(child22.arr) // [ 1, 2, 3, 4 ]
+
+
+// 3.组合继承 (组合 1 2 两种方法)
+function Child3() {
+	// 将父类的实例属性/方法直接放到子类的实例中来，避免了方法2的缺点
+	Parent.call(this)
+	this.type = 'child3'
+}
+// 然后再将子类的 prototype 赋值为父类实例，这样虽然原型链中间还有一层，但是这一层的值在子类实例中都有
+Child3.prototype = new Parent()
+let child3 = new Child3()
+// 这样的缺点是: 实例化一个子类对象，调用了两次 new
+
+
+// 4.组合继承优化(1)
+function Child4() {
+	Parent.call(this)
+	this.type = 'child4'
+}
+// 方法3中我们发现 子类实例的 __proto__ 指向父类实例，但是父类实例的属性/方法我们已经在子类的构造方法中定义了
+// 因此这一层 __proto__ 是多余的，所以可以直接将子类实例的 __proto__ 指向父类构造方法的 prototype
+// 即 子类构造方法的 prototype 指向父类构造方法的 prototype
+Child4.prototype = Parent.prototype
+let child4 = new Child4()
+// 当然还是有缺陷: 子类构造方法的 prototype 就是父类构造方法的 prototype
+// 那子类构造方法的 prototype 中的 constructor 就是 Parent()
+// 所以通过 instanceof 判断是哪个类的实例时是无法区分子类和父类实例的
+child4 instanceof Child4 // true
+child4 instanceof Parent // true
+
+
+// 5.组合继承优化(2)
+function Child5() {
+	Parent.call(this)
+	this.type = 'child5'
+}
+// 解决子类构造方法的 prototype 和父类构造方法的 prototype 相同的问题
+// 用 Object.create() 函数构造一个新的对象，新对象 __proto__ 指向父类构造方法的 prototype
+// 然后更改这个新对象的 constructor 属性，指向 Child5
+Child5.prototype = Object.create(Parent.prototype)
+Child5.prototype.constructor = Child5
+let child5 = Child5()
+
+
 
 
 
