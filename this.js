@@ -9,8 +9,10 @@
 // 每个函数都有自己的 excution context，和 variable object。
 // 这些环境用于储存上下文中的变量，函数声明，参数等。
 // 只有函数才能制造作用域。for if else Object不能创造作用域。
-// 本质上来说，this 是一个指向函数执行环境的指针
-// this 永远指向最后调用它的对象，并且在执行时才能获取值，定义时无法确认他的值。
+// this 既不指向函数自身也不指向函数的词法作用域
+// this 代表的是当前行为执行的主体
+// this 实际上是在函数被调用时发生的绑定，它指向什么完全取决于函数在哪里被调用
+
 
 // 函数有四种调用方式
 // 1.方法调用模式：obj.method()
@@ -80,3 +82,24 @@ printPair.apply({ key: 'age' }, [6]);	// age: 6
 
 // bind(oThis, arg1,arg2...) 方法也可以改变 this 的指向，但是他只进行绑定，不立即执行函数
 // 执行 bind 后，会使后面call apply失效
+
+
+
+// 给元素的某一个事件绑定方法，当事件触发执行对应的方法，匿名函数中的this是当前的元素
+// oDiv.onclick=function(){
+// 	// this->oDiv
+// };
+
+// oDiv.addEventListener("click",function(){
+// 	// this->oDiv
+// },false);
+
+// 如果使用箭头函数，则是外层作用域的this，一般是window。
+// 不太符合使用习惯，所以尽量不要用箭头函数定义事件监听器
+// oDiv.addEventListener('click', e => {
+// 	// this->window
+// })
+
+
+
+// 在构造函数模式中 this 是当前类的一个实例

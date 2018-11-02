@@ -150,11 +150,12 @@ Child2.prototype = new Parent()
 // 子类实例的 __proto__ 指向构造函数的 prototype，即父类的实例对象，继承了父类的实例属性/方法
 // 父类的实例 __proto__ 又指向父类构造函数 prototype，因此也继承了父类的原型属性/方法
 let child2 = new Child2()
+let child22 = new Child2()
 // 这样的缺点是: 父类的引用型实例属性 保存在子类实例的 __proto__ ，因此是子类实例之间共享的
 // child2没有自己的 arr 属性， 修改 child2.arr 会影响其他的 child
-child22 = new Child2()
+child22.arr // [ 1, 2, 3 ]
 child2.arr.push(4)
-console.log(child22.arr) // [ 1, 2, 3, 4 ]
+child22.arr // [ 1, 2, 3, 4 ]
 
 
 // 3.组合继承 (组合 1 2 两种方法)
@@ -166,7 +167,9 @@ function Child3() {
 // 然后再将子类的 prototype 赋值为父类实例，这样虽然原型链中间还有一层，但是这一层的值在子类实例中都有
 Child3.prototype = new Parent()
 let child3 = new Child3()
-// 这样的缺点是: 实例化一个子类对象，调用了两次 new
+// 这样的缺点是: 调用了两次 new，其中子类构造函数的 prototype 这一层是没有必要的，
+// 因为其中的父类实例属性/方法已经在子类构造函数中继承了
+let child33 = new Child3();
 
 
 // 4.组合继承优化(1)
@@ -197,11 +200,51 @@ function Child5() {
 Child5.prototype = Object.create(Parent.prototype)
 Child5.prototype.constructor = Child5
 let child5 = Child5()
+child5 instanceof Parent // false
+
+
+// 6.ES6 中使用 Class 继承
+// 类名相当于 ES5 的构造函数
+class Parent6 {
+	// 父类构造函数
+	constructor(name) {
+		// this 指向实例
+		this.name = name || 'Parent6'
+	}
+	// 定义在 class 内的都是原型方法
+	sayHello() {
+		console.log('hello from parent');
+	}
+}
+// 使用 extends 关键字进行继承
+class Child6 extends Parent6 {
+	constructor(name, age) {
+		// ES5实现继承，是先建立子类的this，然后把父类的实例属性/方法添加到该this上
+		// ES6则完全不同，ES6必须先调用父类的构造函数来构成 this，然后再对该 this 进行子类的加工
+		// 只有调用super之后，才可以使用this关键字
+		super(name)
+		this.age = age || 20
+	}
+}
+let child6 = new Child6()
+// class是语法糖，实现的方法类似方法3，子类.prototype = new 父类()
+child6.__proto__ instanceof Parent6			// true
+Child6.prototype instanceof Parent6			// true
+child6.__proto__ === Child6.prototype		// true
+// 但是修改了constructor指向  子类.prototype.constructor = class 子类
+// class 和构造函数有区别，不能区分是子类的实例还是父类的实例
+child6 instanceof Chilad6								// true
+child6 instanceof Parent6								// true
 
 
 
-
-
+/*
+██████   ██████  ██   ██    ██ ███    ███  ██████  ██████  ██████  ██   ██ ██  ██████
+██   ██ ██    ██ ██    ██  ██  ████  ████ ██    ██ ██   ██ ██   ██ ██   ██ ██ ██
+██████  ██    ██ ██     ████   ██ ████ ██ ██    ██ ██████  ██████  ███████ ██ ██
+██      ██    ██ ██      ██    ██  ██  ██ ██    ██ ██   ██ ██      ██   ██ ██ ██
+██       ██████  ███████ ██    ██      ██  ██████  ██   ██ ██      ██   ██ ██  ██████
+*/
 
 // 实现多态:同一个操作作用于不同对象，得到不同的执行方式和结果
 // 将“做什么” 和 “谁来做、怎么做” 分开

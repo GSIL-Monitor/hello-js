@@ -1,77 +1,133 @@
 {
-	let x = 1;
-	let y = 1.0;
-	x === y; // true
-	typeof x === typeof y; // true
+	// 6种原始数据类型 undefined null boolean string number symbol
+	// 1种引用数据类型 Object，又区分为Array Function Date RegExp等
+
+	// typeof 可以区别除了 null 之外的其他原始数据类型 以及Object中的Function
+	typeof undefined // "undefined"
+	typeof null // object
+	typeof 1 // number
 	typeof NaN; // number
+	typeof "1" // string
+	typeof Symbol() // symbol
+	typeof function() {} // function
+	typeof {} // object
+
+	// instanceof 可以判断 Object 的类型，不能判断原始数据类型
+	new Date() instanceof Date	// true
+	// new Number() 是对象类型，不是原始数据类型
+	new Number() instanceof Number // true
+	new String() instanceof String // true
+
+	// Object.prototype.toString()方法 返回 [object 类型] 模式的字符串
+	Object.prototype.toString.call(null).slice(8, -1)	// Null
+	Object.prototype.toString.call(undefined).slice(8, -1)	// Undefined
+	Object.prototype.toString.call(true).slice(8, -1)	// Boolean
+	Object.prototype.toString.call(new Number()).slice(8, -1)	// Number
+	Object.prototype.toString.call(3).slice(8, -1)	// Number
+
+
 	NaN === NaN; // false
 	isNaN(NaN); // true
-	setImmediate(function A() {
-		console.log(1);
-		setImmediate(function B() {
-			console.log(2);
-		});
-	});
-	setTimeout(function timeout() {
-		console.log('TIMEOUT FIRED');
-	}, 1000);
-	setTimeout(function timeout() {
-		console.log('TIMEOUT2');
-	}, 1000);
+
 }
 
+/*
+███████ ██    ██ ███████ ███    ██ ████████     ██       ██████   ██████  ██████
+██      ██    ██ ██      ████   ██    ██        ██      ██    ██ ██    ██ ██   ██
+█████   ██    ██ █████   ██ ██  ██    ██        ██      ██    ██ ██    ██ ██████
+██       ██  ██  ██      ██  ██ ██    ██        ██      ██    ██ ██    ██ ██
+███████   ████   ███████ ██   ████    ██        ███████  ██████   ██████  ██
+*/
 {
 	// Js事件循环
 
 	// Js是单线程的(多线程会造成同步互斥问题)
 	// Js是通过事件循环(event loop)机制实现异步的
+	// 一个事件循环包括：
+	// 1.宏任务入函数栈执行
+	// 2.微任务入函数栈执行
 
-	// 首先判断代码段是同步还是异步，同步就进入主线程执行，异步就进入event table
-	// 异步任务在event table中注册函数，当满足触发条件后，推入event queue
-	// 同步任务进入主线程后一直执行，直到主线程空闲后才会去执行event queue的异步任务
+	// 当执行一段js代码时，整个代码相当于一个宏任务，所以全局上下文入函数栈执行，执行当前上下文的同步代码
+	// 碰到宏任务(setTimeout、setInterval、setImmediate)就将其异步任务分发到下一个loop的相应宏任务队列(setTimeout/setInterval在同一个队列、setImmediate在后面的队列)
+	// 碰到微任务(nextTick，Promise)就将其异步任务(nextTick的参数、Promise.then)分发到本次循环相应微任务队列
+	// 全局执行完后，去检查微任务队列，从nextTick队列开始，将微任务上下文入函数栈执行，同样碰到宏任务就将其异步任务分发到宏任务队列，微任务异步任务分发到'当前'循环的微任务队列(也就是说微任务中分发的微任务仍然在本次loop中执行)；nextTick队列执行完再去执行promise队列，同样进行异步任务分发；promise执行完后还会再重新检查微任务队列，因为每当执行完一个异步队列(不论是宏任务队列还是微任务队列)，都会重新检查微任务队列来执行
+	// 所有微任务执行完，第一个事件循环就完成了，进入下次事件循环
+	// 下次事件循环从setTimeout/setInterval队列开始，同样进行任务分发。执行完当前loop的setTimeout队列后会先检查微任务队列，执行刚刚分发的微任务；然后再进入 setImmediate 队列，进行异步任务分发，清空 setImmediate 队列后，执行微任务；微任务执行完后结束当前loop，进入下一个loop
+	// 以上基于node环境分析，node环境中是清空一个宏队列再去检查微任务，而浏览器中是执行完一个宏任务就去检查微任务
 
-	// 异步任务内部也有顺序
-	// 1.process.nextTick(fn)是在当前执行栈尾部、异步任务之前添加回调，也就是说fn执行在所有异步任务之前
-	// nextTick嵌套nextTick仍然是在当前事件循环中执行，不会推迟到下一个loop
-	// 2.Promise.then()，如果嵌套立即resolve的promise，仍然在当前loop中执行
-	// 3.setTimeout()和setInterval()，定时结束后尽量早的执行，可能在当前时间loop也可能在后面
-	// 4.setImmediate()，如果里面有异步，则在下个loop执行
 
+	setImmediate(function() {
+		setImmediate(function() {
+			console.log('setImmediate2');
+		});
+		console.log('setImmediate1');
+	});
+	setTimeout(() => {
+		setTimeout(() => {
+			console.log('TIMEOUT2');
+		})
+		console.log('TIMEOUT1');
+	});
+	new Promise((resolve, reject) => {
+		resolve()
+		new Promise(resolve2 => {
+			resolve2()
+		}).then(() => {
+			console.log('p1');
+		})
+	}).then(()=>{
+		console.log('p2');
+		new Promise(resolve => {
+			resolve()
+		}).then(()=>{console.log('p3');})
+	})
+	process.nextTick(() => {
+		console.log('nextTick1');
+		process.nextTick(() => {
+			console.log('nextTick2');
+		})
+	})
+	// nextTick1
+	// nextTick2
+	// p1
+	// p2
+	// p3
+	// TIMEOUT1
+	// setImmediate1
+	// TIMEOUT2 和 setImmediate2 不一定
 }
 
 
 
-
-
 /*
-███████ ███████  ██████
-██      ██      ██
-█████   ███████ ███████
-██           ██ ██    ██
-███████ ███████  ██████
+██    ██  █████  ██████
+██    ██ ██   ██ ██   ██
+██    ██ ███████ ██████
+ ██  ██  ██   ██ ██   ██
+  ████   ██   ██ ██   ██
 */
 
-
-
 /*
-var 声明的是全局变量，并且执行时会将声明提前，赋值不提前
-var 声明的全局变量属于顶层变量（浏览器:window， node:global）
-var a=1;
-global.a; // 1
+不使用var let const 声明的变量是全局变量，属于window/global顶层对象，应该避免
 
-let 声明的变量与当前作用域绑定，声明不会提前
-let 不允许在相同作用域内重复声明变量
-let 作用域内声明的变量，在声明前是不可用的，即便外层有同名的全局var变量
+var 声明的变量属于当前作用域(全局或函数作用域)，并且执行时会将声明提前，赋值不提前 (变量提升 hoist )
+浏览器中 var 声明的全局变量属于顶层对象 window
+var a=1;
+window.a; // 1
+
+let 声明的变量属于当前块级作用域，声明不会提前
+let 不允许在相同作用域内用 let 声明重名变量
+暂时性死区：只要块级作用域内存在let命令，它所声明的变量就“绑定”（binding）这个区域，不再受外部的影响作用域内声明的变量，
+并且变量在 let 声明前是不可用的
 
 const 实际上保证的，并不是变量的值不得改动，而是变量指向的那个内存地址所保存的数据不得改动。
 const 特性与let相同
-let const 声明的全局变量不属于顶层变量
+let const class 声明的全局变量不属于顶层变量window/global
 
 
 对于简单类型的数据（数值、字符串、布尔值），变量指向的内存地址中保存的就是实际值
 但对于复合类型的数据（主要是对象和数组），变量指向的内存地址，保存的只是一个指向实际数据的指针
 */
-
 
 
 // 解构赋值

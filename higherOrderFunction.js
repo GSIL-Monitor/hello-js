@@ -27,8 +27,7 @@ var appendDiv = function (callback) {
 // 判断类型主函数
 var isType = function(type) {
 	return function(obj) {
-		// return Object.prototype.toString.call(obj) === '[object ' + type + ']';
-		return (typeof obj) === `${type}`.toLowerCase()
+		return Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() === type.toLowerCase()
 	};
 };
 // 构造一个判断string的函数
