@@ -1,0 +1,164 @@
+@import './var.less';
+body {
+  // font-family: 'PingFangSC-Regular', sans-serif;
+  box-sizing: border-box; // font-family: 'PingFangSC-Regular', sans-serif;
+  background-color: @app-bgc; // max-width: 640px;
+  margin: 0 auto;
+}
+
+// @media screen and (min-width:640px) and (max-width:20000px){
+//   html,body{
+//     font-size: 20px;
+//   }
+//   div{
+//     max-width: 640px;
+//   }
+// }
+input {
+  outline: none;
+}
+
+td {
+  vertical-align: inherit;
+}
+
+.icon-direction {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 3px 0 0 3px;
+  // border-color: transparent transparent transparent #ADADAD;
+  border-color: transparent transparent transparent #fc9153;
+  opacity: 0.2;
+}
+
+.icon-direction-png {
+  background-image: url('~assets/images/OtoD_short@3x.png');
+  background-size: 6.17rem 0.25rem;
+  width: 6.17rem;
+  height: 0.25rem;
+  position: absolute;
+  left: 0;
+  bottom: 0.1rem;
+}
+
+.hight-light {
+  color: #fc9153;
+}
+
+.font-24 {
+  font-size: 24px;
+}
+
+.font-18 {
+  font-size: 18px;
+}
+
+.font-17 {
+  font-size: 17px;
+}
+
+.font-16 {
+  font-size: 16px;
+}
+
+.font-14 {
+  font-size: 14px;
+}
+
+.font-12 {
+  font-size: 12px;
+}
+
+.font-weight-500 {
+  font-weight: 500;
+}
+
+.loading-fixed {
+  transform: translate(-50%, -50%);
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: @z-loading;
+}
+
+.loading-dialog {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cube-input::after {
+  border: 0 !important;
+}
+
+.cubeic-arrow {
+  color: #999999;
+}
+
+// toast提示框定义最小高度
+.cube-toast-tip {
+  max-height: none !important;
+  min-height: 20px;
+}
+
+.cube-action-sheet-list {
+  .cube-action-sheet-item {
+    color: #333333;
+  }
+  .cube-action-sheet-item_active {
+    color: #fc9153;
+  }
+}
+
+.contact-input {
+  .cube-input-field {
+    color: #333333;
+  }
+}
+
+//吸底按钮外部容器
+.fixed-bottom-container {
+  position: fixed;
+  bottom: 0;
+  height: 70px;
+  line-height: 70px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 11px;
+  background: #ffffff;
+}
+
+.fixed-bottom-container-white {
+  background: #ffffff;
+}
+
+.fixed-bottom-container-shadow {
+  box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.08);
+}
+
+.fixed-bottom-container-transparent {
+  background: transparent;
+}
+
+.rotate-class {
+  animation: rotate 0.24s linear;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-360deg);
+  }
+  75% {
+    transform: rotate(-360deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}

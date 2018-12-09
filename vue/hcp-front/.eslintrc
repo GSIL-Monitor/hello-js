@@ -1,0 +1,60 @@
+{
+  "root": true,
+  "extends": [
+    "plugin:vue/essential",
+    "airbnb-base/legacy"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+  "rules": {
+    "quotes": 0,
+    # 服务端接口返回的key都为下划线，所以不强制变量使用驼峰了
+    "camelcase": 0,
+    "no-unused-vars": 0,
+    "semi": 0,
+    "vue/no-parsing-error": [2, { "x-invalid-end-tag": false }],
+    "arrow-parens": 0,
+    "generator-star-spacing": 0,
+    "space-before-function-paren": ["warn", "never"],
+    "eqeqeq": [0],
+    "handle-callback-err": 0,
+    "no-extra-boolean-cast": 0,
+    "one-var": 0,
+    "operator-linebreak": 0,
+    # 允许用a++
+    "no-plusplus": 0,
+    # console仅作warning
+    "no-console": 1,
+    # props的default function一般都为匿名函数
+    "func-names": [0, "never"],
+    # vue的watcher函数不应用箭头函数；methods一般不写shorthand
+    "object-shorthand": [0, "methods"],
+    # 超出长度warning，忽略url，忽略模版字符串
+    "max-len": [1, { "code": 120, "ignoreUrls": true, "ignoreTemplateLiterals": true, "ignoreStrings": true }],
+    # 最后的分号
+    "comma-dangle": [2, {
+      "arrays": "never",
+      "objects": "ignore",
+      "imports": "never",
+      "exports": "never",
+      "functions": "ignore"
+    }],
+    # 方括号取值
+    "dot-notation": [1, { "allowKeywords": true, "allowPattern": "^[a-z]+(_[a-z]+)+$" }],
+    # 箭头函数return是否缩写
+    # "arrow-body-style": [2, "as-needed", { "requireReturnForObjectLiteral": true }],
+    "arrow-body-style": 0,
+    "object-curly-newline": [0],
+    # 允许对白名单列表中的函数入参进行reassign，如vuex中mutation需要修改state
+    "no-param-reassign": [ 0, { "props": true, "ignorePropertyModificationsFor": [ "state", "acc", "e", "ctx", "req", "request", "res", "response", "$scope" ] } ],
+    # 不允许用Object，Array，Object作为变量名；块作用域内允许使用前面已声明使用的变量名，如vuex中getter里的state
+    "no-shadow": [0, "builtinGlobals": true, "hoist": "functions", "allow": []],
+    "no-use-before-define": [2, { "functions": false, "classes": true, "variables": true }],
+    # 允许使用_
+    "no-underscore-dangle": 0,
+    # 只强制对象解构，不强制数组解构;
+    "prefer-destructuring": [1, { "array": false, "object": true }, { "enforceForRenamedProperties": false }],
+    "no-restricted-syntax": [2, "WithStatement"]
+  }
+}
