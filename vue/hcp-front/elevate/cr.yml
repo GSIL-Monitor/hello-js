@@ -1,0 +1,8 @@
+# 模块的默认评审人员列表
+reviewers: huangzhijingpoint songchao
+# 模块的负责人
+owner: huangzhijingpoint songchao
+# 模块的订阅人，会收到CR通知，但是没有CR单的审批权限，可以添加行评论
+subscriber: huangzhijingpoint songchao
+# default模式下 任意一个reviewer或者owner评审通过即可，该模式下owner可以 自己review自己
+strategy: default
